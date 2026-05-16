@@ -1,4 +1,4 @@
-![logo](https://github.com/urlagushka/kochou/blob/main/pics/kochou2.png)
+![logo](https://gitverse.ru/kochou-framework/kochou/content/master/pics/kochou2.png)
 # kochou
 ## C++ 23 | VulkanAPI
 
