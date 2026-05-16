@@ -96,9 +96,12 @@ set_project("kochou")
 set_languages("c++23")
 
 add_rules("mode.debug", "mode.release")
-includes("../ktl")
+
+includes("third_party/ktl")
 
 target("kochou")
+    add_deps("ktl")
+
     set_kind("static")
 
     add_files(
@@ -118,7 +121,6 @@ target("kochou")
     )
 
     add_includedirs("include", {public = true})
-    add_deps("ktl", {public = true})
 
     if is_plat("macosx") then
         add_frameworks("Cocoa", "Metal", "QuartzCore", "Foundation")
