@@ -11,9 +11,6 @@
 
 #include <ktl/type.hpp>
 
-#define KOCHOU_BUILD_DEBUG
-#define KOCHOU_LOG_LEVEL 10
-
 namespace kochou::log
 {
 namespace color

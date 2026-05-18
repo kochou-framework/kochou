@@ -62,7 +62,7 @@ target("kochou")
         end
 
         local log_level = get_required_config("kochou_log_level")
-        target:add('defines', 'KOCHOU_LOG_LEVEL="' .. log_level .. '"', {public=true})
+        target:add('defines', 'KOCHOU_LOG_LEVEL=' .. log_level, {public=true})
 
         local build_mode = get_required_config("kochou_build_mode")
         target:add('defines', 'KOCHOU_BUILD_' .. build_mode:upper(), {public=true})
