@@ -1,6 +1,8 @@
 #ifndef KOCHOU_REQUIREMENTS_LAYER_HPP
 #define KOCHOU_REQUIREMENTS_LAYER_HPP
 
+#include <cassert>
+
 #include <ktl/errc.hpp>
 
 #include <kochou/context/context.hpp>

@@ -1,6 +1,8 @@
 #ifndef KOCHOU_CORE_REQUIREMENTS_VERSION_HPP
 #define KOCHOU_CORE_REQUIREMENTS_VERSION_HPP
 
+#include <cassert>
+
 #include <ktl/api/version.hpp>
 #include <ktl/errc.hpp>
 

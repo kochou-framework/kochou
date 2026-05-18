@@ -1,6 +1,8 @@
 #ifndef KOCHOU_REQUIREMENTS_FORMAT_HPP
 #define KOCHOU_REQUIREMENTS_FORMAT_HPP
 
+#include <cassert>
+
 #include <ktl/api.hpp>
 
 #include <kochou/context/context.hpp>
