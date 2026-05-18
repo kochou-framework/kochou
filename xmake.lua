@@ -16,11 +16,6 @@ option("kochou_build_mode")
     set_values("debug", "release")
 option_end()
 
--- vulkan dynamic library path
-option("kochou_dylib_path")
-    set_description("vulkan dynamic library path")
-option_end()
-
 -- target platform
 option("kochou_platform")
     set_description("target platform: macos, linux, windows")
@@ -66,9 +61,6 @@ target("kochou")
 
         local build_mode = get_required_config("kochou_build_mode")
         target:add('defines', 'KOCHOU_BUILD_' .. build_mode:upper(), {public=true})
-
-        local dylib_path = get_required_config("kochou_dylib_path")
-        target:add('defines', 'KOCHOU_DYLIB_PATH="' .. dylib_path .. '"', {public=true})
 
         local platform = get_required_config("kochou_platform")
         target:add('defines', 'KOCHOU_PLATFORM_' .. platform:upper(), {public=true})
