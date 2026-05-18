@@ -16,12 +16,6 @@ option("kochou_build_mode")
     set_values("debug", "release")
 option_end()
 
--- target platform
-option("kochou_platform")
-    set_description("target platform: macos, linux, windows")
-    set_values("macos", "linux", "windows")
-option_end()
-
 includes("third_party/ktl")
 
 target("kochou")
@@ -61,7 +55,4 @@ target("kochou")
 
         local build_mode = get_required_config("kochou_build_mode")
         target:add('defines', 'KOCHOU_BUILD_' .. build_mode:upper(), {public=true})
-
-        local platform = get_required_config("kochou_platform")
-        target:add('defines', 'KOCHOU_PLATFORM_' .. platform:upper(), {public=true})
     end)
