@@ -1,101 +1,55 @@
-local KOCHOU_BUILD = {
-    debug   = "KOCHOU_BUILD_DEBUG",
-    release = "KOCHOU_BUILD_RELEASE"
-}
-
-local KOCHOU_VULKAN_DYLIB_PATH_MACOS = {
-    debug   = "/opt/homebrew/lib/libMoltenVK.dylib",
-    release = "libMoltenVK.dylib"
-}
-local KOCHOU_VULKAN_DYLIB_PATH_LINUX = {
-    debug   = "/usr/lib/x86_64-linux-gnu/libvulkan.so.1",
-    release = "libvulkan.so.1"
-}
-local KOCHOU_VULKAN_DYLIB_PATH_WINDOWS = {
-    debug   = "",
-    release = ""
-}
-
-local KOCHOU_WINDOW_BACKEND = {
-    METAL   = "KOCHOU_WINDOW_BACKEND_METAL",
-    WAYLAND = "KOCHOU_WINDOW_BACKEND_WAYLAND",
-    WIN32   = "KOCHOU_WINDOW_BACKEND_WIN32",
-    XCB     = "KOCHOU_WINDOW_BACKEND_XCB",
-    XLIB    = "KOCHOU_WINDOW_BACKEND_XLIB"
-}
-
-local KOCHOU_WINDOW_BACKEND_DEFAULT = {
-    macosx  = KOCHOU_WINDOW_BACKEND.METAL,
-    windows = KOCHOU_WINDOW_BACKEND.WIN32,
-    linux   = KOCHOU_WINDOW_BACKEND.XLIB
-}
-
-function make_defines(target)
-    -- build
-    local build = is_mode("debug") and KOCHOU_VULKAN_DYLIB_PATH_MACOS.debug or KOCHOU_VULKAN_DYLIB_PATH_MACOS.release
-    if not build then
-        raise("Specify kochou build mode, current: '%s'", build)
-    end
-    target:add("defines", KOCHOU_BUILD[build], {public = true})
-
-    -- window backend
-    local window_backend = get_config("window_backend")
-    if not window_backend then
-        window_backend = KOCHOU_WINDOW_BACKEND_DEFAULT[os.host()]
-    end
-
-    local is_backend_valid = false;
-    for _, backend in pairs(KOCHOU_WINDOW_BACKEND) do
-        if backend == window_backend then
-            is_backend_valid = true
-            break
-        end
-    end
-    if not is_backend_valid then
-        raise(
-            "Invalid window backend: '%s'. Available: %s",
-            window_backend,
-            table.concat(table.values(KOCHOU_WINDOW_BACKEND), ", ")
-        )
-    end
-    target:add("defines", window_backend, {public = true})
-
-    -- platform
-    local platform = os.host()
-    if platform == "macosx" then
-        target:add("defines", "KOCHOU_PLATFORM_MACOS", {public = true})
-        -- vulkan dylib
-        local vulkan_dylib = is_mode("debug") and KOCHOU_VULKAN_DYLIB_PATH_MACOS.debug or KOCHOU_VULKAN_DYLIB_PATH_MACOS.release
-        if not vulkan_dylib then
-            raise("Specify vulkan dynamic library path, current: '%s'", vulkan_dylib)
-        end
-        target:add("defines", 'KOCHOU_LOADER_VULKAN_DYNAMIC_LIB_NAME="' .. vulkan_dylib .. '"', {public = true})
-    elseif platform == "linux" then
-        target:add("defines", "KOCHOU_PLATFORM_LINUX", {public = true})
-        -- vulkan dylib
-        local vulkan_dylib = is_mode("debug") and KOCHOU_VULKAN_DYLIB_PATH_LINUX.debug or KOCHOU_VULKAN_DYLIB_PATH_LINUX.release
-        if not vulkan_dylib then
-            raise("Specify vulkan dynamic library path, current: '%s'", vulkan_dylib)
-        end
-        target:add("defines", 'KOCHOU_LOADER_VULKAN_DYNAMIC_LIB_NAME="' .. vulkan_dylib .. '"', {public = true})
-    elseif platform == "windows" then
-        target:add("defines", "KOCHOU_PLATFORM_WIN32", {public = true})
-        -- vulkan dylib
-        local vulkan_dylib = is_mode("debug") and KOCHOU_VULKAN_DYLIB_PATH_WINDOWS.debug or KOCHOU_VULKAN_DYLIB_PATH_WINDOWS.release
-        if not vulkan_dylib then
-            raise("Specify vulkan dynamic library path, current: '%s'", vulkan_dylib)
-        end
-        target:add("defines", 'KOCHOU_LOADER_VULKAN_DYNAMIC_LIB_NAME="' .. vulkan_dylib .. '"', {public = true})
-    else
-        raise("Unsupported platform: '%s'", platform)
-    end
-end
-
 set_xmakever("3.0.0")
 set_project("kochou")
 set_languages("c++23")
 
 add_rules("mode.debug", "mode.release")
+
+-- log level
+option("kochou_log_level")
+    set_description("log level: info=1, warning=2, error=3, fatal=4, debug=5")
+    set_values("0", "1", "2", "3", "4", "5")
+    after_check(function (opt)
+        local val = opt:value()
+        if not val or val == "" then
+            raise("kochou_log_level is invalid (maybe null)")
+        end
+    end)
+option_end()
+
+-- build mode
+option("kochou_build_mode")
+    set_description("build mode: debug, release")
+    set_values("debug", "release")
+    after_check(function (opt)
+        local val = opt:value()
+        if not val or val == "" then
+            raise("kochou_build_mode is invalid (maybe null)")
+        end
+    end)
+option_end()
+
+-- vulkan dynamic library path
+option("kochou_dylib_path")
+    set_description("vulkan dynamic library path")
+    after_check(function (opt)
+        local val = opt:value()
+        if not val or val == "" then
+            raise("kochou_dylib_path is invalid (maybe null)")
+        end
+    end)
+option_end()
+
+-- target platform
+option("kochou_platform")
+    set_description("target platform: macos, linux, windows")
+    set_values("macos", "linux", "windows")
+    after_check(function (opt)
+        local val = opt:value()
+        if not val or val == "" then
+            raise("kochou_platform is invalid (maybe null)")
+        end
+    end)
+option_end()
 
 includes("third_party/ktl")
 
@@ -122,8 +76,16 @@ target("kochou")
 
     add_includedirs("include", {public = true})
 
-    if is_plat("macosx") then
-        add_frameworks("Cocoa", "Metal", "QuartzCore", "Foundation")
-    end
+    on_config(function (target)
+        local log_level = get_config("kochou_log_level")
+        target:add('defines', 'KOCHOU_LOG_LEVEL="' .. log_level .. '"', {public=true})
 
-    on_load(make_defines)
+        local build_mode = get_config("kochou_build_mode")
+        target:add('defines', 'KOCHOU_BUILD_' .. build_mode:upper(), {public=true})
+
+        local dylib_path = get_config("kochou_dylib_path")
+        target:add('defines', 'KOCHOU_DYLIB_PATH="' .. dylib_path .. '"', {public=true})
+
+        local platform = get_config("kochou_platform")
+        target:add('defines', 'KOCHOU_PLATFORM_' .. platform:upper(), {public=true})
+    end)

@@ -21,6 +21,31 @@ enum class api_flag : ktl::mask_underlying_type
     directx
 };
 
+enum class backend_flag : ktl::mask_underlying_type
+{
+    metal,
+    wayland,
+    win32,
+    xcb
+};
+
+#ifndef KOCHOU_WINDOW_BACKEND_METAL
+static constexpr backend_flag backend_defined = backend_flag::metal;
+
+#elifdef KOCHOU_WINDOW_BACKEND_WAYLAND
+static constexpr backend_flag backend_defined = backend_flag::wayland;
+
+#elifdef KOCHOU_WINDOW_BACKEND_WIN32
+static constexpr backend_flag backend_defined = backend_flag::win32;
+
+#elifdef KOCHOU_WINDOW_BACKEND_XLIB
+static constexpr backend_flag backend_defined = backend_flag::xlib;
+
+#else
+static_assert("unknown backend, not supported" && false);
+
+#endif
+
 #ifdef KOCHOU_PLATFORM_LINUX
 static constexpr api_flag api_defined = api_flag::vulkan;
 static constexpr os_flag  os_defined  = os_flag::linux;
@@ -34,7 +59,7 @@ static constexpr api_flag api_defined = api_flag::vulkan;
 static constexpr os_flag  os_defined  = os_flag::windows;
 
 #else
-static_assert("unknown os! not supported!" && false);
+static_assert("unknown os, not supported" && false);
 
 #endif
 } // namespace kochou
