@@ -9,7 +9,6 @@
 
 #include <kochou/external.hpp>
 #include <kochou/log.hpp>
-#include <kochou/system.hpp>
 
 namespace kochou
 {
