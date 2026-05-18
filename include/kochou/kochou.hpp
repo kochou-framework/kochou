@@ -17,7 +17,6 @@
 
 // requirements
 #include <kochou/requirements/allowed.hpp>
-#include <kochou/requirements/component.hpp>
 #include <kochou/requirements/ensure.hpp>
 #include <kochou/requirements/extension.hpp>
 #include <kochou/requirements/feature.hpp>
@@ -30,6 +29,5 @@
 // common
 #include <kochou/external.hpp>
 #include <kochou/log.hpp>
-#include <kochou/system.hpp>
 
 #endif
