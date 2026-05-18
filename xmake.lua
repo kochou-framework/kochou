@@ -54,7 +54,7 @@ target("kochou")
 
     on_config(function (target)
         local function get_required_config(name)
-            local val = config.get(name)
+            local val = get_config(name)
             if not val or val == "" then
                 raise("error: option '" .. name .. "' is not set! Define it via set_config() or 'xmake f --" .. name .. "=value'")
             end
