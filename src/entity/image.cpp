@@ -1,6 +1,5 @@
 #include <kochou/context/view.hpp>
 #include <kochou/entity/image.hpp>
-#include <kochou/entity/swapchain.hpp>
 
 ktl::errc
 kochou::entity::image::ensure(kochou::shared_context _sctx) noexcept

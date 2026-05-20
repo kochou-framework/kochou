@@ -249,7 +249,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,
                                      bool _is_need_destroy) noexcept
-    : sctx_(_sctx), swapchain_(_swapchain), is_need_destroy_(_is_need_destroy), images_(), image_views_()
+    : sctx_(_sctx), swapchain_(_swapchain), is_need_destroy_(_is_need_destroy)
 {
 }
 

@@ -6,8 +6,6 @@
 #include <ktl/type.hpp>
 
 #include <kochou/context/context.hpp>
-#include <kochou/entity/image.hpp>
-#include <kochou/entity/image_view.hpp>
 #include <kochou/entity/interface.hpp>
 #include <kochou/entity/surface.hpp>
 
@@ -73,8 +71,8 @@ private:
     ktl::api::swapchain_khr swapchain_;
     bool                    is_need_destroy_;
 
-    std::vector< kochou::entity::shared_image >      images_;
-    std::vector< kochou::entity::shared_image_view > image_views_;
+    // std::vector< kochou::entity::shared_image >      images_;
+    // std::vector< kochou::entity::shared_image_view > image_views_;
 };
 } // namespace kochou::entity
 

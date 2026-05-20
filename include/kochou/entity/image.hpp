@@ -4,10 +4,10 @@
 #include <ktl/memory.hpp>
 
 #include <kochou/entity/interface.hpp>
+#include <kochou/entity/swapchain.hpp>
 
 namespace kochou::entity
 {
-class swapchain;
 class image
 {
     // requirements
