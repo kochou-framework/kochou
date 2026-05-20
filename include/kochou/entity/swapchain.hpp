@@ -40,6 +40,7 @@ public:
         ktl::api::present_mode_khr present_mode;
     };
 
+    // requirements
 public:
     static ktl::errc
     ensure(kochou::shared_context _sctx) noexcept;
@@ -48,26 +49,29 @@ public:
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
 
-private:
-    swapchain(ktl::errc & _errc, kochou::shared_context _sctx, kochou::entity::shared_surface _surface,
-              const input_info & _input, output_info & _output) noexcept;
-
+    // fabrics
 public:
     static ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
-    make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _info) noexcept;
+    make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _input) noexcept;
+
+    // common
+public:
+    swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain, bool _is_need_destroy) noexcept;
     swapchain(const swapchain &) noexcept = delete;
-    swapchain(swapchain &&) noexcept;
+    swapchain(swapchain &&) noexcept      = default;
     swapchain &
     operator=(const swapchain &) noexcept = delete;
     swapchain &
-    operator=(swapchain &&) noexcept;
+    operator=(swapchain &&) noexcept = default;
     ~swapchain() noexcept;
 
 private:
-    kochou::shared_context                           sctx_;
-    ktl::api::swapchain_khr                          swapchain_;
+    kochou::shared_context  sctx_;
+    ktl::api::swapchain_khr swapchain_;
+    bool                    is_need_destroy_;
+
     std::vector< kochou::entity::shared_image >      images_;
-    std::vector< kochou::entity::shared_image_view > image_views;
+    std::vector< kochou::entity::shared_image_view > image_views_;
 };
 } // namespace kochou::entity
 
