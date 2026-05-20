@@ -25,11 +25,11 @@ public:
 public:
     surface(ktl::api::surface_khr _surface, ktl::u32 _width, ktl::u32 _height) noexcept;
     surface(const surface &) noexcept = delete;
-    surface(surface &&) noexcept      = default;
+    surface(surface &&) noexcept      = delete;
     surface &
     operator=(const surface &) = delete;
     surface &
-    operator=(surface &&) = default;
+    operator=(surface &&) = delete;
     ~surface() noexcept;
 
     // methods
