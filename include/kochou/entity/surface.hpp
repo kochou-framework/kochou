@@ -20,20 +20,38 @@ public:
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
 
-    ktl::api::surface_khr   raw; // readonly after create
-    std::atomic< ktl::u64 > size;
+public:
+    surface(ktl::api::surface_khr _surface, ktl::u32 _width, ktl::u32 _height) noexcept;
+    surface(const surface &) noexcept = delete;
+    surface(surface &&) noexcept      = default;
+    surface &
+    operator=(const surface &) = delete;
+    surface &
+    operator=(surface &&) = default;
+    ~surface() noexcept;
 
-    inline static ktl::u32
-    width(ktl::u64 _size)
+public:
+    inline ktl::api::surface_khr
+    raw() const noexcept
     {
-        return static_cast< ktl::u32 >(_size & 0xFFFFFFFF);
+        return surface_;
     }
 
-    inline static ktl::u32
-    height(ktl::u64 _size)
+    inline ktl::u32
+    width() const noexcept
     {
-        return static_cast< ktl::u32 >(_size >> 32);
+        return static_cast< ktl::u32 >(size_ & 0xFFFFFFFF);
     }
+
+    inline ktl::u32
+    height() const noexcept
+    {
+        return static_cast< ktl::u32 >(size_ >> 32);
+    }
+
+private:
+    ktl::api::surface_khr   surface_; // readonly after create
+    std::atomic< ktl::u64 > size_;
 };
 
 using shared_surface = ktl::memory::sptr< surface >;

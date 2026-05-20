@@ -128,9 +128,9 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
     : sctx_(_sctx), swapchain_()
 {
     auto physical_device = kochou::view::physical_device(_sctx);
-    auto surface         = _surface.raw;
-    auto width           = surface::width(_surface.size);
-    auto height          = surface::height(_surface.size);
+    auto surface         = _surface.raw();
+    auto width           = _surface.width();
+    auto height          = _surface.height();
 
     auto colors_rc = get_colors(physical_device, surface);
     if (!colors_rc.has_value())

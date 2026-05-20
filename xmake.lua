@@ -36,7 +36,12 @@ target("kochou")
         "src/details/resolve_device.cpp",
         "src/details/resolve_instance.cpp",
         "src/details/resolve_queue.cpp",
-        "src/details/resolve_version.cpp"
+        "src/details/resolve_version.cpp",
+
+        "src/entity/image_view.cpp",
+        "src/entity/image.cpp",
+        "src/entity/surface.cpp",
+        "src/entity/swapchain.cpp"
     )
 
     add_includedirs("include", {public = true})
