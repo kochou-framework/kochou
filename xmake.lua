@@ -42,7 +42,8 @@ target("kochou")
         "src/entity/image.cpp",
         "src/entity/surface.cpp",
         "src/entity/swapchain.cpp",
-        "src/entity/fence.cpp"
+        "src/entity/fence.cpp",
+        "src/entity/command_pool.cpp"
     )
 
     add_includedirs("include", {public = true})
