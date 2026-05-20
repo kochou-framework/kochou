@@ -20,9 +20,7 @@ kochou::entity::fence::allowed(kochou::shared_context _sctx) noexcept
 }
 
 ktl::result< kochou::entity::fence, ktl::errc >
-kochou::entity::fence::make(kochou::shared_context       _sctx,
-                            ktl::api::fence_create_flags _bits = static_cast< ktl::api::fence_create_flags >(
-                                ktl::api::fence_create_flag_bits::v_signaled_bit)) noexcept
+kochou::entity::fence::make(kochou::shared_context _sctx, ktl::api::fence_create_flags _bits) noexcept
 {
     auto                        device = kochou::view::device(_sctx);
     ktl::api::fence_create_info info{};
