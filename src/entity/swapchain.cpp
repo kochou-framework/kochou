@@ -129,12 +129,12 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
     : sctx_(_sctx), swapchain_()
 {
     auto physical_device = kochou::view::physical_device(_sctx);
-    auto surface         = _surface->raw();
-    auto width           = _surface->width();
-    auto height          = _surface->height();
     kochou::log::debug("physical_device={}", physical_device);
+    auto surface = _surface->raw();
     kochou::log::debug("surface={}", surface);
+    auto width = _surface->width();
     kochou::log::debug("width={}", width);
+    auto height = _surface->height();
     kochou::log::debug("height={}", height);
 
     auto colors_rc = get_colors(physical_device, surface);
@@ -250,7 +250,8 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
 {
     ktl::errc   rc;
     output_info output;
-    swapchain   sw(rc, _sctx, _surface, _info, output);
+    kochou::log::debug("ready to construct swapchain");
+    swapchain sw(rc, _sctx, _surface, _info, output);
     if (rc != ktl::errc::success)
     {
         kochou::log::error("swapchain creation failed");
