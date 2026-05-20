@@ -24,9 +24,12 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
                                  ktl::api::format _format, ktl::api::image_aspect_flag_bits _aspect) noexcept
 {
     auto device = kochou::view::device(_sctx);
+    kochou::log::debug("device={}", device);
 
     std::vector< image_view > image_views;
     image_views.reserve(_images.size());
+    kochou::log::debug("images size={}", _images.size());
+    kochou::log::debug("image_views size={}", image_views.size());
 
     for (ktl::usize i = 0; i < _images.size(); ++i)
     {
@@ -48,6 +51,7 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
         ktl::api::result     rc       = ktl::api::create_image_view(device, &create_info, nullptr, &view_raw);
         if (rc != ktl::api::result::v_success)
         {
+            kochou::log::error("create_image_view failed, rc={}", static_cast< ktl::u32 >(rc));
             for (auto & view : image_views)
             {
                 if (view.raw)
@@ -57,10 +61,12 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
             }
             return ktl::err(ktl::cast_api_result(rc));
         }
-
+        kochou::log::debug("image_view created");
         image_views[i] = image_view(_sctx, view_raw, true);
+        kochou::log::debug("image_view moved");
     }
 
+    kochou::log::debug("ready to return image_views");
     return image_views;
 }
 
