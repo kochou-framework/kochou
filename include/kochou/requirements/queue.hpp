@@ -1,6 +1,8 @@
 #ifndef KOCHOU_REQUIREMENTS_QUEUE_HPP
 #define KOCHOU_REQUIREMENTS_QUEUE_HPP
 
+#include <cassert>
+
 #include <ktl/errc.hpp>
 
 #include <kochou/context/context.hpp>
@@ -53,7 +55,7 @@ kochou::queue< QUEUE_BIT >::ensure(kochou::shared_context _sctx) noexcept
     {
         return _sctx->ensure(QUEUE_BIT);
     }
-    static_assert(false && "unsupported now");
+    assert(false && "unsupported now");
 }
 
 template < ktl::api::queue_flag_bits QUEUE_BIT >
@@ -64,7 +66,7 @@ kochou::queue< QUEUE_BIT >::should(kochou::shared_context _sctx) noexcept
     {
         return _sctx->ensure(QUEUE_BIT);
     }
-    static_assert(false && "unsupported now");
+    assert(false && "unsupported now");
 }
 
 template < ktl::api::queue_flag_bits QUEUE_BIT >
