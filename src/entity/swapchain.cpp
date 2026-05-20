@@ -130,7 +130,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
 {
     auto physical_device = kochou::view::physical_device(_sctx);
     kochou::log::debug("physical_device={}", physical_device);
-    auto surface = _surface->raw();
+    auto surface = _surface->raw;
     kochou::log::debug("surface={}", surface);
     auto width = _surface->width();
     kochou::log::debug("width={}", width);
@@ -249,14 +249,14 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,
                                      bool _is_need_destroy) noexcept
-    : sctx_(_sctx), swapchain_(_swapchain), is_need_destroy_(_is_need_destroy)
+    : raw(_swapchain), sctx_(_sctx), is_need_destroy_(_is_need_destroy)
 {
 }
 
 kochou::entity::swapchain::~swapchain() noexcept
 {
-    if (swapchain_ && is_need_destroy_)
+    if (raw && is_need_destroy_)
     {
-        ktl::api::destroy_swapchain_khr(kochou::view::device(sctx_), swapchain_, nullptr);
+        ktl::api::destroy_swapchain_khr(kochou::view::device(sctx_), raw, nullptr);
     }
 }

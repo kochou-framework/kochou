@@ -25,7 +25,7 @@ kochou::entity::surface::allowed(kochou::shared_context _sctx) noexcept
 }
 
 kochou::entity::surface::surface(ktl::api::surface_khr _surface, ktl::u32 _width, ktl::u32 _height) noexcept
-    : surface_(_surface), size_(static_cast< ktl::u64 >(_height) << 32 | static_cast< ktl::u64 >(_width))
+    : raw(_surface), size_(static_cast< ktl::u64 >(_height) << 32 | static_cast< ktl::u64 >(_width))
 {
 }
 

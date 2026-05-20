@@ -36,18 +36,20 @@ kochou::entity::fence::make(kochou::shared_context _sctx, ktl::api::fence_create
     return fence(std::move(_sctx), fence_raw);
 }
 
-kochou::entity::fence::fence(kochou::shared_context _sctx, ktl::api::fence _fence) noexcept {}
+kochou::entity::fence::fence(kochou::shared_context _sctx, ktl::api::fence _fence) noexcept : raw(_fence), sctx_(_sctx)
+{
+}
 
 kochou::entity::fence::~fence() noexcept {}
 
 ktl::errc
 kochou::entity::fence::wait(ktl::u64 _timeout) noexcept
 {
-    return ktl::cast_api_result(ktl::api::wait_for_fences(kochou::view::device(sctx_), 1, &fence_, true, _timeout));
+    return ktl::cast_api_result(ktl::api::wait_for_fences(kochou::view::device(sctx_), 1, &raw, true, _timeout));
 }
 
 ktl::errc
 kochou::entity::fence::reset() noexcept
 {
-    return ktl::cast_api_result(ktl::api::reset_fences(kochou::view::device(sctx_), 1, &fence_));
+    return ktl::cast_api_result(ktl::api::reset_fences(kochou::view::device(sctx_), 1, &raw));
 }
