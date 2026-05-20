@@ -238,8 +238,9 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
     }
 
     output_info output = {create_info.min_image_count, chosen_format, chosen_mode};
+    swapchain   sv(_sctx, raw_handle, true);
     kochou::log::debug("swapchain creation success");
-    return std::make_tuple(std::move(swapchain(_sctx, raw_handle, true)), output);
+    return std::make_tuple(std::move(sv), output);
 }
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,
