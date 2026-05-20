@@ -241,7 +241,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, const kochou::enti
     {
         return ktl::err(rc);
     }
-    return std::make_tuple(sw, output);
+    return std::make_tuple(std::move(sw), output);
 }
 
 kochou::entity::swapchain::swapchain(swapchain && rhs) noexcept : sctx_(rhs.sctx_), swapchain_(rhs.swapchain_)
