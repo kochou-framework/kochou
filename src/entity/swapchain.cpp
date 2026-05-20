@@ -123,6 +123,7 @@ kochou::entity::swapchain::allowed(kochou::shared_context _sctx) noexcept
     return kochou::allowed< kochou::extension< ktl::api::extension::khr_swapchain > >(_sctx);
 }
 
+// TODO debug properties resolve
 kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _sctx,
                                      kochou::entity::shared_surface _surface, const input_info & _input,
                                      output_info & _output) noexcept

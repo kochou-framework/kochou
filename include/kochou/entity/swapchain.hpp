@@ -16,6 +16,10 @@ namespace kochou::entity
 class swapchain
 {
 public:
+    friend class image;
+    friend class image_view;
+
+public:
     struct input_info
     {
         ktl::u32                   buffering;

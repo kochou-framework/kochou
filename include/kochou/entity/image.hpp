@@ -7,6 +7,7 @@
 
 namespace kochou::entity
 {
+class swapchain;
 class image
 {
 public:
@@ -16,6 +17,23 @@ public:
     should(kochou::shared_context _sctx) noexcept;
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
+
+public:
+    static ktl::result< std::vector< image >, ktl::errc >
+    make(kochou::shared_context _sctx, kochou::entity::swapchain & _swapchain) noexcept;
+
+public:
+    image(ktl::api::image _image) noexcept;
+    image(const image &) noexcept = delete;
+    image(image &&) noexcept      = default;
+    image &
+    operator=(const image &) noexcept = delete;
+    image &
+    operator=(image &&) noexcept = default;
+    ~image() noexcept;
+
+private:
+    ktl::api::image image_;
 };
 using shared_image = ktl::memory::sptr< kochou::entity::image >;
 } // namespace kochou::entity
