@@ -60,8 +60,8 @@ get_colors(ktl::api::physical_device _physical_device, ktl::api::surface_khr _su
     std::vector< ktl::api::color_space_khr > color_spaces(amount);
     for (ktl::u32 i = 0; i < amount; ++i)
     {
-        formats.push_back(surface_formats[i].format);
-        color_spaces.push_back(surface_formats[i].color_space);
+        formats[i]      = surface_formats[i].format;
+        color_spaces[i] = surface_formats[i].color_space;
     }
 
     return std::make_tuple(formats, color_spaces);
@@ -239,7 +239,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
 
     output_info output = {create_info.min_image_count, chosen_format, chosen_mode};
     kochou::log::debug("swapchain creation success");
-    return std::make_tuple(swapchain(_sctx, raw_handle, true), output);
+    return std::make_tuple(std::move(swapchain(_sctx, raw_handle, true)), output);
 }
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,
