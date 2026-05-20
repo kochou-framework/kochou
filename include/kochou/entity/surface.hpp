@@ -1,18 +1,44 @@
 #ifndef KOCHOU_ENTITY_SURFACE_HPP
 #define KOCHOU_ENTITY_SURFACE_HPP
 
-#include <kochou/context/context.hpp>
+#include <atomic>
+
+#include <ktl/api.hpp>
+#include <ktl/memory.hpp>
+
+#include <kochou/entity/interface.hpp>
 
 namespace kochou::entity
 {
-class surface
+struct surface
 {
 public:
-    surface(kochou::shared_context _sctx) noexcept;
+    static ktl::errc
+    ensure(kochou::shared_context _sctx) noexcept;
+    static ktl::errc
+    should(kochou::shared_context _sctx) noexcept;
+    static bool
+    allowed(kochou::shared_context _sctx) noexcept;
 
-private:
-    kochou::shared_context sctx_;
+    ktl::api::surface_khr   raw; // readonly after create
+    std::atomic< ktl::u64 > size;
+
+    inline static ktl::u32
+    width(ktl::u64 _size)
+    {
+        return static_cast< ktl::u32 >(_size & 0xFFFFFFFF);
+    }
+
+    inline static ktl::u32
+    height(ktl::u64 _size)
+    {
+        return static_cast< ktl::u32 >(_size >> 32);
+    }
 };
+
+using shared_surface = ktl::memory::sptr< surface >;
 } // namespace kochou::entity
+
+static_assert(kochou::entity::is_valid_entity< kochou::entity::surface >);
 
 #endif
