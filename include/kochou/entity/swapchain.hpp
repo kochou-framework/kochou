@@ -13,6 +13,9 @@
 
 namespace kochou::entity
 {
+class swapchain;
+using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
+
 class swapchain
 {
 public:
@@ -51,8 +54,6 @@ public:
 
     // fabrics
 public:
-    using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
-
     static ktl::result< std::tuple< shared_swapchain, output_info >, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _input) noexcept;
 
