@@ -25,7 +25,9 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
 {
     auto device = kochou::view::device(_sctx);
 
-    std::vector< image_view > image_views(_images.size());
+    std::vector< image_view > image_views;
+    image_views.reserve(_images.size());
+
     for (ktl::usize i = 0; i < _images.size(); ++i)
     {
         ktl::api::image_view_create_info create_info{};
