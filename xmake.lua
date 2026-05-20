@@ -41,7 +41,8 @@ target("kochou")
         "src/entity/image_view.cpp",
         "src/entity/image.cpp",
         "src/entity/surface.cpp",
-        "src/entity/swapchain.cpp"
+        "src/entity/swapchain.cpp",
+        "src/entity/fence.cpp"
     )
 
     add_includedirs("include", {public = true})
