@@ -37,12 +37,13 @@ kochou::entity::command_pool::make(kochou::shared_context _sctx) noexcept
         return ktl::err(ktl::cast_api_result(rc));
     }
 
+    kochou::log::debug("command_pool ready for return");
     return command_pool(std::move(_sctx), raw_pool, true);
 }
 
 kochou::entity::command_pool::command_pool(kochou::shared_context _sctx, ktl::api::command_pool _command_pool,
                                            bool _is_need_destroy) noexcept
-    : raw(_command_pool), sctx_(_sctx), is_need_destroy_(_is_need_destroy)
+    : raw(_command_pool), sctx_(std::move(_sctx)), is_need_destroy_(_is_need_destroy)
 {
 }
 
