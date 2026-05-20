@@ -23,7 +23,7 @@ public:
 
     // fabrics
 public:
-    ktl::result< std::vector< kochou::entity::image_view >, ktl::errc >
+    static ktl::result< std::vector< kochou::entity::image_view >, ktl::errc >
     make(kochou::shared_context _sctx, std::span< kochou::entity::image > _images, ktl::api::format _format,
          ktl::api::image_aspect_flag_bits _aspect = ktl::api::image_aspect_flag_bits::v_color_bit) noexcept;
 
