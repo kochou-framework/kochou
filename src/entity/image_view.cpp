@@ -62,7 +62,7 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
             return ktl::err(ktl::cast_api_result(rc));
         }
         kochou::log::debug("image_view created");
-        image_views.push_back(image_view(_sctx, view_raw, true));
+        image_views.emplace_back(_sctx, view_raw, true); // тут проблема
         kochou::log::debug("image_view moved");
     }
 
