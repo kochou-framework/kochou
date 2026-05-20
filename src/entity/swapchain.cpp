@@ -123,14 +123,14 @@ kochou::entity::swapchain::allowed(kochou::shared_context _sctx) noexcept
 }
 
 kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _sctx,
-                                     const kochou::entity::surface & _surface, const input_info & _input,
+                                     kochou::entity::shared_surface _surface, const input_info & _input,
                                      output_info & _output) noexcept
     : sctx_(_sctx), swapchain_()
 {
     auto physical_device = kochou::view::physical_device(_sctx);
-    auto surface         = _surface.raw();
-    auto width           = _surface.width();
-    auto height          = _surface.height();
+    auto surface         = _surface->raw();
+    auto width           = _surface->width();
+    auto height          = _surface->height();
 
     auto colors_rc = get_colors(physical_device, surface);
     if (!colors_rc.has_value())
@@ -231,7 +231,7 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
 }
 
 ktl::result< std::tuple< kochou::entity::swapchain, kochou::entity::swapchain::output_info >, ktl::errc >
-kochou::entity::swapchain::make(kochou::shared_context _sctx, const kochou::entity::surface & _surface,
+kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface,
                                 const input_info & _info) noexcept
 {
     ktl::errc   rc;

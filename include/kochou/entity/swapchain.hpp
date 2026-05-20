@@ -9,6 +9,7 @@
 #include <kochou/entity/image.hpp>
 #include <kochou/entity/image_view.hpp>
 #include <kochou/entity/interface.hpp>
+#include <kochou/entity/surface.hpp>
 
 namespace kochou::entity
 {
@@ -44,12 +45,12 @@ public:
     allowed(kochou::shared_context _sctx) noexcept;
 
 private:
-    swapchain(ktl::errc & _errc, kochou::shared_context _sctx, const kochou::entity::surface & _surface,
+    swapchain(ktl::errc & _errc, kochou::shared_context _sctx, kochou::entity::shared_surface _surface,
               const input_info & _input, output_info & _output) noexcept;
 
 public:
     ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
-    make(kochou::shared_context _sctx, const kochou::entity::surface & _surface, const input_info & _info) noexcept;
+    make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _info) noexcept;
     swapchain(const swapchain &) noexcept = delete;
     swapchain(swapchain &&) noexcept;
     swapchain &
