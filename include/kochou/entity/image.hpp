@@ -35,9 +35,13 @@ public:
     operator=(image &&) noexcept = default;
     ~image() noexcept;
 
+    // raw
+public:
+    ktl::api::image raw;
+
+    // shared raii
 private:
     kochou::entity::shared_swapchain swapchain_;
-    ktl::api::image                  image_;
 };
 using shared_image = ktl::memory::sptr< kochou::entity::image >;
 } // namespace kochou::entity

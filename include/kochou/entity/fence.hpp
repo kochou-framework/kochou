@@ -10,6 +10,7 @@ namespace kochou::entity
 {
 class fence
 {
+    // requirements
 public:
     static ktl::errc
     ensure(kochou::shared_context _sctx) noexcept;
@@ -18,11 +19,14 @@ public:
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
 
+    // fabrics
 public:
     static ktl::result< fence, ktl::errc >
     make(kochou::shared_context _sctx, ktl::api::fence_create_flags _bits = static_cast< ktl::api::fence_create_flags >(
                                            ktl::api::fence_create_flag_bits::v_signaled_bit)) noexcept;
 
+    // common
+public:
     fence(kochou::shared_context _sctx, ktl::api::fence _fence) noexcept;
     fence(const fence &) = delete;
     fence(fence &&)      = default;
@@ -32,15 +36,20 @@ public:
     operator=(fence &&) = default;
     ~fence() noexcept;
 
+    // methods
 public:
     ktl::errc
     wait(ktl::u64 _timeout) noexcept;
     ktl::errc
     reset() noexcept;
 
+    // raw
+public:
+    ktl::api::fence raw;
+
+    // shared raii
 private:
     kochou::shared_context sctx_;
-    ktl::api::fence        fence_;
 };
 } // namespace kochou::entity
 

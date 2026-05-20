@@ -12,6 +12,7 @@ namespace kochou::entity
 {
 struct surface
 {
+    // requirements
 public:
     static ktl::errc
     ensure(kochou::shared_context _sctx) noexcept;
@@ -20,6 +21,7 @@ public:
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
 
+    // common
 public:
     surface(ktl::api::surface_khr _surface, ktl::u32 _width, ktl::u32 _height) noexcept;
     surface(const surface &) noexcept = delete;
@@ -30,13 +32,8 @@ public:
     operator=(surface &&) = delete;
     ~surface() noexcept;
 
+    // methods
 public:
-    inline ktl::api::surface_khr
-    raw() const noexcept
-    {
-        return surface_;
-    }
-
     inline ktl::u32
     width() const noexcept
     {
@@ -49,8 +46,12 @@ public:
         return static_cast< ktl::u32 >(size_ >> 32);
     }
 
+    // raw
+public:
+    ktl::api::surface_khr raw;
+
+    // shared raii
 private:
-    ktl::api::surface_khr   surface_; // readonly after create
     std::atomic< ktl::u64 > size_;
 };
 

@@ -11,17 +11,11 @@
 
 namespace kochou::entity
 {
-class image;
-class image_view;
 class swapchain;
 using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
 
 class swapchain
 {
-public:
-    friend class image;
-    friend class image_view;
-
 public:
     struct input_info
     {
@@ -68,13 +62,14 @@ public:
     operator=(swapchain &&) noexcept = delete;
     ~swapchain() noexcept;
 
-private:
-    kochou::shared_context  sctx_;
-    ktl::api::swapchain_khr swapchain_;
-    bool                    is_need_destroy_;
+    // raw
+public:
+    ktl::api::swapchain_khr raw;
 
-    // std::vector< kochou::entity::shared_image >      images_;
-    // std::vector< kochou::entity::shared_image_view > image_views_;
+    // shared raii
+private:
+    kochou::shared_context sctx_;
+    bool                   is_need_destroy_;
 };
 } // namespace kochou::entity
 
