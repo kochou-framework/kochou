@@ -53,7 +53,7 @@ kochou::entity::image::make(kochou::shared_context _sctx, kochou::entity::shared
     images.reserve(amount);
     for (auto raw : raw_images)
     {
-        images.emplace_back(raw);
+        images.push_back(image(_swapchain, raw));
     }
 
     return std::move(images);

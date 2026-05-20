@@ -24,6 +24,7 @@ public:
     static ktl::result< std::vector< image >, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_swapchain _swapchain) noexcept;
 
+    // common
 public:
     image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image) noexcept;
     image(const image &) noexcept = delete;

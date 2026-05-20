@@ -11,6 +11,8 @@
 
 namespace kochou::entity
 {
+class image;
+class image_view;
 class swapchain;
 using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
 
