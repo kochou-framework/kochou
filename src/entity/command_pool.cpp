@@ -19,7 +19,7 @@ kochou::entity::command_pool::allowed(kochou::shared_context _sctx) noexcept
     return true;
 }
 
-ktl::result< kochou::entity::shared_command_pool, ktl::errc >
+ktl::result< kochou::entity::command_pool, ktl::errc >
 kochou::entity::command_pool::make(kochou::shared_context _sctx) noexcept
 {
     auto device = kochou::view::device(_sctx);
@@ -37,13 +37,7 @@ kochou::entity::command_pool::make(kochou::shared_context _sctx) noexcept
         return ktl::err(ktl::cast_api_result(rc));
     }
 
-    auto shared_command_pool = ktl::memory::make_shared< command_pool >(_sctx, raw_pool, true);
-    if (!shared_command_pool.has_value())
-    {
-        return ktl::err(shared_command_pool.error());
-    }
-
-    return shared_command_pool;
+    return command_pool(std::move(_sctx), raw_pool, true);
 }
 
 kochou::entity::command_pool::command_pool(kochou::shared_context _sctx, ktl::api::command_pool _command_pool,
