@@ -49,7 +49,7 @@ private:
               const input_info & _input, output_info & _output) noexcept;
 
 public:
-    ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
+    static ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _info) noexcept;
     swapchain(const swapchain &) noexcept = delete;
     swapchain(swapchain &&) noexcept;
