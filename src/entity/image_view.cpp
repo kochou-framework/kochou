@@ -67,7 +67,7 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
     }
 
     kochou::log::debug("ready to return image_views");
-    return image_views;
+    return std::move(image_views);
 }
 
 kochou::entity::image_view::image_view(kochou::shared_context _sctx, ktl::api::image_view _image_view,
