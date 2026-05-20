@@ -124,7 +124,7 @@ kochou::entity::swapchain::allowed(kochou::shared_context _sctx) noexcept
 }
 
 // TODO debug properties resolve
-ktl::result< std::tuple< kochou::entity::swapchain, kochou::entity::swapchain::output_info >, ktl::errc >
+ktl::result< std::tuple< kochou::entity::shared_swapchain, kochou::entity::swapchain::output_info >, ktl::errc >
 kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface,
                                 const input_info & _input) noexcept
 {
@@ -237,10 +237,14 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
         return ktl::err(ktl::cast_api_result(rc));
     }
 
-    output_info output = {create_info.min_image_count, chosen_format, chosen_mode};
-    swapchain   sv(_sctx, raw_handle, true);
+    auto shared_swapchain_rc = ktl::memory::make_shared< swapchain >(_sctx, raw_handle, true);
+    if (!shared_swapchain_rc.has_value())
+    {
+        return ktl::err(shared_swapchain_rc.error());
+    }
     kochou::log::debug("swapchain creation success");
-    return std::make_tuple(std::move(sv), output);
+    return std::make_tuple(shared_swapchain_rc.take_value(),
+                           output_info{create_info.min_image_count, chosen_format, chosen_mode});
 }
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,

@@ -51,7 +51,7 @@ public:
 
     // fabrics
 public:
-    static ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
+    static ktl::result< std::tuple< shared_swapchain, output_info >, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, const input_info & _input) noexcept;
 
     // common
@@ -73,6 +73,8 @@ private:
     std::vector< kochou::entity::shared_image >      images_;
     std::vector< kochou::entity::shared_image_view > image_views_;
 };
+
+using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
 } // namespace kochou::entity
 
 static_assert(kochou::entity::is_valid_entity< kochou::entity::swapchain >);
