@@ -184,7 +184,8 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
     {
         _errc = ktl::errc::unsupported_format;
     }
-    kochou::log::debug("format resolved");
+    kochou::log::debug("format resolved, chosen={}", static_cast< ktl::u32 >(chosen_format));
+    kochou::log::debug("color_space resolved, chosen={}", static_cast< ktl::u32 >(chosen_cs));
 
     ktl::api::present_mode_khr chosen_mode = _input.present_mode;
     if (std::find(present_modes.begin(), present_modes.end(), chosen_mode) == present_modes.end())
@@ -198,7 +199,7 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
             _errc = ktl::errc::unsupported_present_mode;
         }
     }
-    kochou::log::debug("present mode resolved");
+    kochou::log::debug("present mode resolved, chosen={}", static_cast< ktl::u32 >(chosen_mode));
 
     ktl::api::extent_2d actual_extent{};
     if (capabilities.current_extent.width == std::numeric_limits< ktl::u32 >::max())
@@ -212,7 +213,7 @@ kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _
     {
         actual_extent = capabilities.current_extent;
     }
-    kochou::log::debug("extend2d resolved");
+    kochou::log::debug("extend2d resolved, chosen={}:{}", actual_extent.width, actual_extent.height);
 
     ktl::api::swapchain_create_info_khr create_info;
     create_info.surface = surface;
