@@ -27,13 +27,13 @@ public:
 
     // common
 public:
-    fence(kochou::shared_context _sctx, ktl::api::fence _fence) noexcept;
+    fence(kochou::shared_context _sctx, ktl::api::fence _fence, bool _is_need_destroy) noexcept;
     fence(const fence &) = delete;
-    fence(fence &&)      = default;
+    fence(fence &&);
     fence &
     operator=(const fence &) = delete;
     fence &
-    operator=(fence &&) = default;
+    operator=(fence &&);
     ~fence() noexcept;
 
     // methods
@@ -46,6 +46,11 @@ public:
     // raw
 public:
     ktl::api::fence raw;
+    bool            is_need_destroy;
+
+private:
+    void
+    clean() noexcept;
 
     // shared raii
 private:

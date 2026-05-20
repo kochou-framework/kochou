@@ -30,20 +30,25 @@ public:
 public:
     command_pool(kochou::shared_context _sctx, ktl::api::command_pool _command_pool, bool _is_need_destroy) noexcept;
     command_pool(const command_pool &) noexcept = delete;
-    command_pool(command_pool &&) noexcept      = default;
+    command_pool(command_pool &&) noexcept;
     command_pool &
     operator=(const command_pool &) noexcept = delete;
     command_pool &
-    operator=(command_pool &&) noexcept = default;
+    operator=(command_pool &&) noexcept;
     ~command_pool() noexcept;
 
     // raw
 public:
     ktl::api::command_pool raw;
+    bool                   is_need_destroy;
+
+private:
+    void
+    clean() noexcept;
+
     // shared raii
 private:
     kochou::shared_context sctx_;
-    bool                   is_need_destroy_;
 };
 } // namespace kochou::entity
 

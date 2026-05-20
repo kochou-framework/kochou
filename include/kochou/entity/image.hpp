@@ -26,18 +26,23 @@ public:
 
     // common
 public:
-    image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image) noexcept;
+    image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image, bool _is_need_destroy) noexcept;
     image(const image &) noexcept = delete;
-    image(image &&) noexcept      = default;
+    image(image &&) noexcept;
     image &
     operator=(const image &) noexcept = delete;
     image &
-    operator=(image &&) noexcept = default;
+    operator=(image &&) noexcept;
     ~image() noexcept;
 
     // raw
 public:
     ktl::api::image raw;
+    bool            is_need_destroy;
+
+private:
+    void
+    clean() noexcept;
 
     // shared raii
 private:

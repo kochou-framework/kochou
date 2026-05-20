@@ -43,16 +43,47 @@ kochou::entity::command_pool::make(kochou::shared_context _sctx) noexcept
 
 kochou::entity::command_pool::command_pool(kochou::shared_context _sctx, ktl::api::command_pool _command_pool,
                                            bool _is_need_destroy) noexcept
-    : raw(_command_pool), sctx_(std::move(_sctx)), is_need_destroy_(_is_need_destroy)
+    : raw(_command_pool), is_need_destroy(_is_need_destroy), sctx_(std::move(_sctx))
 {
+}
+
+kochou::entity::command_pool::command_pool(command_pool && _rhs) noexcept
+    : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
+      sctx_(std::exchange(_rhs.sctx_, nullptr))
+{
+}
+
+kochou::entity::command_pool &
+kochou::entity::command_pool::operator=(command_pool && _rhs) noexcept
+{
+    if (std::addressof(_rhs) == this)
+    {
+        return *this;
+    }
+
+    clean();
+
+    raw             = std::exchange(_rhs.raw, nullptr);
+    is_need_destroy = std::exchange(_rhs.is_need_destroy, false);
+    sctx_           = std::exchange(_rhs.sctx_, nullptr);
+
+    return *this;
 }
 
 kochou::entity::command_pool::~command_pool() noexcept
 {
-    if (raw && is_need_destroy_)
+    clean();
+}
+
+void
+kochou::entity::command_pool::clean() noexcept
+{
+    if (raw && is_need_destroy && sctx_)
     {
         auto device = kochou::view::device(sctx_);
         ktl::api::destroy_command_pool(device, raw, nullptr);
-        raw = ktl::api::command_pool{};
+        raw             = nullptr;
+        is_need_destroy = false;
     }
+    sctx_ = nullptr;
 }

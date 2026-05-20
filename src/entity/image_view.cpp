@@ -62,7 +62,7 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
             return ktl::err(ktl::cast_api_result(rc));
         }
         kochou::log::debug("image_view created");
-        image_views.emplace_back(_sctx, view_raw, true); // тут проблема
+        image_views.emplace_back(_sctx, view_raw, true);
         kochou::log::debug("image_view moved");
     }
 
@@ -72,16 +72,47 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
 
 kochou::entity::image_view::image_view(kochou::shared_context _sctx, ktl::api::image_view _image_view,
                                        bool _is_need_destroy) noexcept
-    : raw(_image_view), sctx_(_sctx), is_need_destroy_(_is_need_destroy)
+    : raw(_image_view), is_need_destroy(_is_need_destroy), sctx_(_sctx)
 {
+}
+
+kochou::entity::image_view::image_view(image_view && _rhs) noexcept
+    : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
+      sctx_(std::exchange(_rhs.sctx_, nullptr))
+{
+}
+
+kochou::entity::image_view &
+kochou::entity::image_view::operator=(image_view && _rhs) noexcept
+{
+    if (std::addressof(_rhs) == this)
+    {
+        return *this;
+    }
+
+    clean();
+
+    raw             = std::exchange(_rhs.raw, nullptr);
+    is_need_destroy = std::exchange(_rhs.is_need_destroy, false);
+    sctx_           = std::exchange(_rhs.sctx_, nullptr);
+
+    return *this;
 }
 
 kochou::entity::image_view::~image_view() noexcept
 {
-    if (raw && is_need_destroy_)
+    clean();
+}
+
+void
+kochou::entity::image_view::clean() noexcept
+{
+    if (raw && is_need_destroy && sctx_)
     {
         auto device = kochou::view::device(sctx_);
         ktl::api::destroy_image_view(device, raw, nullptr);
-        raw = ktl::api::image_view{};
+        raw             = nullptr;
+        is_need_destroy = false;
     }
+    sctx_ = nullptr;
 }

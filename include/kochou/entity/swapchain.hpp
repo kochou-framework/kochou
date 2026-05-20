@@ -55,11 +55,11 @@ public:
 public:
     swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain, bool _is_need_destroy) noexcept;
     swapchain(const swapchain &) noexcept = delete;
-    swapchain(swapchain &&) noexcept      = delete;
+    swapchain(swapchain &&) noexcept      = default;
     swapchain &
     operator=(const swapchain &) noexcept = delete;
     swapchain &
-    operator=(swapchain &&) noexcept = delete;
+    operator=(swapchain &&) noexcept = default;
     ~swapchain() noexcept;
 
     // raw

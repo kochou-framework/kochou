@@ -53,15 +53,39 @@ kochou::entity::image::make(kochou::shared_context _sctx, kochou::entity::shared
     images.reserve(amount);
     for (auto raw : raw_images)
     {
-        images.push_back(image(_swapchain, raw));
+        images.push_back(image(_swapchain, raw, false));
     }
 
     return std::move(images);
 }
 
-kochou::entity::image::image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image) noexcept
-    : raw(_image), swapchain_(_swapchain)
+kochou::entity::image::image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image,
+                             bool _is_need_destroy) noexcept
+    : raw(_image), is_need_destroy(_is_need_destroy), swapchain_(_swapchain)
 {
+}
+
+kochou::entity::image::image(image && _rhs) noexcept
+    : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
+      swapchain_(std::exchange(_rhs.swapchain_, nullptr))
+{
+}
+
+kochou::entity::image &
+kochou::entity::image::operator=(image && _rhs) noexcept
+{
+    if (std::addressof(_rhs) == this)
+    {
+        return *this;
+    }
+
+    // clean();
+
+    raw             = std::exchange(_rhs.raw, nullptr);
+    is_need_destroy = std::exchange(_rhs.is_need_destroy, false);
+    swapchain_      = std::exchange(_rhs.swapchain_, nullptr);
+
+    return *this;
 }
 
 kochou::entity::image::~image() noexcept
