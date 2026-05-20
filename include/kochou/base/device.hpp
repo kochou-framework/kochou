@@ -20,11 +20,11 @@ private:
 public:
     template < std::ranges::input_range EXTENSION_RANGE, std::ranges::input_range FEATURE_RANGE >
         requires std::same_as< std::ranges::range_value_t< EXTENSION_RANGE >, ktl::api::extension > &&
-                 std::same_as< std::ranges::range_value_t< FEATURE_RANGE >, ktl::api::feature >
+                     std::same_as< std::ranges::range_value_t< FEATURE_RANGE >, ktl::api::feature >
     device(ktl::errc & _errc, const ktl::api::version & _version, ktl::api::physical_device _physical_device,
            EXTENSION_RANGE && _extensions, FEATURE_RANGE && _features, ktl::u32 _family_index,
            ktl::api::queue_flags _queue) noexcept
-        : handle_(nullptr)
+        : handle_(nullptr), family_(_family_index)
     {
         auto chain_rc = kochou::make_feature_chain_filled(_version, _features);
         if (!chain_rc.has_value())
@@ -74,7 +74,8 @@ public:
 
 public:
     ktl::api::device handle_ = nullptr;
-}; // namespace kochou
+    ktl::u32         family_ = 0;
+};
 } // namespace kochou
 
 #endif

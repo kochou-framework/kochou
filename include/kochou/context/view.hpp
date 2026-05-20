@@ -25,6 +25,10 @@ struct view
     [[nodiscard]]
     inline static ktl::api::device
     device(kochou::shared_context & _sctx);
+
+    [[nodiscard]]
+    inline static ktl::u32
+    family(kochou::shared_context & _sctx);
 };
 } // namespace kochou
 
@@ -50,6 +54,12 @@ ktl::api::device
 kochou::view::device(kochou::shared_context & _sctx)
 {
     return _sctx->device_->handle_;
+}
+
+ktl::u32
+kochou::view::family(kochou::shared_context & _sctx)
+{
+    return _sctx->device_->family_;
 }
 
 #endif
