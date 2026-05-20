@@ -44,9 +44,8 @@ public:
     allowed(kochou::shared_context _sctx) noexcept;
 
 private:
-    kochou::entity::swapchain::swapchain(ktl::errc & _errc, kochou::shared_context _sctx,
-                                         const kochou::entity::surface & _surface, const input_info & _input,
-                                         output_info & _output) noexcept;
+    swapchain(ktl::errc & _errc, kochou::shared_context _sctx, const kochou::entity::surface & _surface,
+              const input_info & _input, output_info & _output) noexcept;
 
 public:
     ktl::result< std::tuple< swapchain, output_info >, ktl::errc >
