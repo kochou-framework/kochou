@@ -49,4 +49,7 @@ kochou::entity::fence::wait(ktl::u64 _timeout) noexcept
 }
 
 ktl::errc
-kochou::entity::fence::reset() noexcept;
+kochou::entity::fence::reset() noexcept
+{
+    return ktl::cast_api_result(ktl::api::reset_fences(kochou::view::device(sctx_), 1, &fence_));
+}
