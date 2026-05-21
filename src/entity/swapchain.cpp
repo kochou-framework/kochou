@@ -213,7 +213,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
         return ktl::err(ktl::cast_api_result(rc));
     }
 
-    auto shared_swapchain_rc = ktl::memory::make_shared< swapchain >(_sctx, raw_handle, true);
+    auto shared_swapchain_rc = ktl::memory::make_shared< swapchain >(_sctx, _surface, raw_handle, true);
     if (!shared_swapchain_rc.has_value())
     {
         return ktl::err(shared_swapchain_rc.error());
