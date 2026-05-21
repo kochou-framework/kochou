@@ -7,6 +7,9 @@
 
 namespace kochou::entity
 {
+class command_buffer;
+using shared_command_buffer = ktl::memory::sptr< command_buffer >;
+
 class command_buffer
 {
     // requirements
@@ -18,15 +21,16 @@ public:
     static bool
     allowed(kochou::shared_context _sctx) noexcept;
 
+    // fabrics
 public:
-    static ktl::result< command_buffer, ktl::errc >
+    static ktl::result< shared_command_buffer, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_command_pool _shared_command_pool,
-         ktl::api::command_buffer_level = ktl::api::command_buffer_level::v_primary) noexcept;
+         ktl::api::command_buffer_level _level = ktl::api::command_buffer_level::v_primary) noexcept;
 
     // common
 public:
-    command_buffer(kochou::shared_context _sctx, ktl::api::command_buffer _command_buffer,
-                   bool is_need_destroy) noexcept;
+    command_buffer(kochou::shared_context _sctx, kochou::entity::shared_command_pool _command_pool,
+                   ktl::api::command_buffer _command_buffer, bool _is_need_destroy) noexcept;
     command_buffer(const command_buffer &) noexcept = delete;
     command_buffer(command_buffer &&) noexcept;
     command_buffer &
@@ -50,9 +54,14 @@ public:
     ktl::api::command_buffer raw;
     bool                     is_need_destroy;
 
+private:
+    void
+    clean() noexcept;
+
     // shared raii
 private:
-    kochou::shared_context sctx_;
+    kochou::shared_context              sctx_;
+    kochou::entity::shared_command_pool command_pool_;
 };
 } // namespace kochou::entity
 

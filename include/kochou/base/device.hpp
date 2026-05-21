@@ -44,13 +44,16 @@ public:
 
         // TODO
         // сделать какую-нибудь нормальную конфигурацию очередей
-        float                              queue_priority[1] = {1.0f};
+        // 1.0f - graphics
+        // 0.7f - compute
+        // 0.4f - compute
+        float                              queue_priority[3] = {1.0f, 0.7f, 0.4};
         ktl::api::device_queue_create_info queue             = {
-                        .queue_family_index = _family_index, .queue_count = 1, .p_queue_priorities = queue_priority};
+                        .queue_family_index = _family_index, .queue_count = 3, .p_queue_priorities = queue_priority};
         ktl::api::device_create_info info = {.flags                   = 0,
-                                             .queue_create_info_count = 0,
+                                             .queue_create_info_count = 1,
                                              .p_queue_create_infos    = &queue,
-                                             .enabled_layer_count     = 1,
+                                             .enabled_layer_count     = 0,
                                              .pp_enabled_layer_names  = nullptr,
                                              .enabled_extension_count = static_cast< ktl::u32 >(extensions_vec.size()),
                                              .pp_enabled_extension_names = extensions_vec.data(),
