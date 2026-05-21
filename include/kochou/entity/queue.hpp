@@ -59,4 +59,6 @@ private:
 };
 } // namespace kochou::entity
 
+static_assert(kochou::entity::is_valid_entity< kochou::entity::queue >);
+
 #endif
