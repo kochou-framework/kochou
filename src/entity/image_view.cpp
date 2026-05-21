@@ -49,7 +49,8 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
             return ktl::err(ktl::cast_api_result(rc));
         }
 
-        auto shared_image_view_rc = ktl::memory::make_shared< image_view >(_sctx, raw_image_view, true);
+        auto shared_image_view_rc =
+            ktl::memory::make_shared< image_view >(_sctx, _shared_images[i], raw_image_view, true);
         if (!shared_image_view_rc.has_value())
         {
             return ktl::err(shared_image_view_rc.error());
