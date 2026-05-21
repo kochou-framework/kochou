@@ -88,7 +88,8 @@ warning(std::format_string< ARGS... > _fmt, ARGS &&... _args)
     {
         return;
     }
-    std::cout << std::format("[KOCHOU] {} WARNING ", format_time_point(std::chrono::system_clock::now()))
+    std::cout << std::format("[KOCHOU] {} {}WARNING{} ", format_time_point(std::chrono::system_clock::now()),
+                             kochou::log::color::yellow, kochou::log::color::reset)
               << std::format(_fmt, std::forward< ARGS >(_args)...) << '\n';
 }
 

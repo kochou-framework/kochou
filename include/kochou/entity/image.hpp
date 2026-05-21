@@ -8,6 +8,9 @@
 
 namespace kochou::entity
 {
+class image;
+using shared_image = ktl::memory::sptr< kochou::entity::image >;
+
 class image
 {
     // requirements
@@ -21,12 +24,13 @@ public:
 
     // fabrics
 public:
-    static ktl::result< std::vector< image >, ktl::errc >
+    static ktl::result< std::vector< shared_image >, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_swapchain _swapchain) noexcept;
 
     // common
 public:
-    image(kochou::entity::shared_swapchain _swapchain, ktl::api::image _image, bool _is_need_destroy) noexcept;
+    image(kochou::shared_context _sctx, kochou::entity::shared_swapchain _swapchain, ktl::api::image _image,
+          bool _is_need_destroy) noexcept;
     image(const image &) noexcept = delete;
     image(image &&) noexcept;
     image &
@@ -46,9 +50,9 @@ private:
 
     // shared raii
 private:
+    kochou::shared_context           sctx_;
     kochou::entity::shared_swapchain swapchain_;
 };
-using shared_image = ktl::memory::sptr< kochou::entity::image >;
 } // namespace kochou::entity
 
 static_assert(kochou::entity::is_valid_entity< kochou::entity::image >);

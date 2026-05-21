@@ -19,25 +19,31 @@ kochou::entity::fence::allowed(kochou::shared_context _sctx) noexcept
     return true;
 }
 
-ktl::result< kochou::entity::fence, ktl::errc >
-kochou::entity::fence::make(kochou::shared_context _sctx, ktl::api::fence_create_flags _bits) noexcept
+ktl::result< kochou::entity::shared_fence, ktl::errc >
+kochou::entity::fence::make(kochou::shared_context _sctx, ktl::api::fence_create_flags _flags) noexcept
 {
     auto                        device = kochou::view::device(_sctx);
     ktl::api::fence_create_info info{};
-    info.flags = _bits;
+    info.flags = _flags;
 
-    ktl::api::fence fence_raw = {};
-    auto            rc        = ktl::api::create_fence(device, &info, nullptr, &fence_raw);
+    ktl::api::fence raw_fence = {};
+    auto            rc        = ktl::api::create_fence(device, &info, nullptr, &raw_fence);
     if (rc != ktl::api::result::v_success)
     {
         return ktl::err(ktl::cast_api_result(rc));
     }
 
-    return fence(std::move(_sctx), fence_raw, true);
+    auto shared_fence_rc = ktl::memory::make_shared< fence >(std::move(_sctx), raw_fence, true);
+    if (!shared_fence_rc.has_value())
+    {
+        return ktl::err(shared_fence_rc.error());
+    }
+
+    return shared_fence_rc.take_value();
 }
 
 kochou::entity::fence::fence(kochou::shared_context _sctx, ktl::api::fence _fence, bool _is_need_destroy) noexcept
-    : raw(_fence), is_need_destroy(_is_need_destroy), sctx_(_sctx)
+    : raw(_fence), is_need_destroy(_is_need_destroy), sctx_(std::move(_sctx))
 {
 }
 

@@ -12,30 +12,6 @@
 #include <kochou/requirements/extension.hpp>
 #include <kochou/requirements/should.hpp>
 
-/*
-struct swapchain_create_info_khr
-{
-    ktl::api::structure_type                  stype = ktl::api::structure_type::v_swapchain_create_info_khr;
-    const void *                              pnext = {};
-    ktl::api::swapchain_create_flags_khr      flags = {};
-    ktl::api::surface_khr                     surface;
-    ktl::u32                                  min_image_count;
-    ktl::api::format                          image_format;
-    ktl::api::color_space_khr                 image_color_space;
-    ktl::api::extent_2d                       image_extent;
-    ktl::u32                                  image_array_layers;
-    ktl::api::image_usage_flags               image_usage;
-    ktl::api::sharing_mode                    image_sharing_mode;
-    ktl::u32                                  queue_family_index_count = {};
-    const ktl::u32 *                          p_queue_family_indices;
-    ktl::api::surface_transform_flag_bits_khr pre_transform;
-    ktl::api::composite_alpha_flag_bits_khr   composite_alpha;
-    ktl::api::present_mode_khr                present_mode;
-    ktl::api::bool32                          clipped;
-    ktl::api::swapchain_khr                   old_swapchain = {};
-};
-*/
-
 namespace
 {
 ktl::result< std::tuple< std::vector< ktl::api::format >, std::vector< ktl::api::color_space_khr > >, ktl::errc >
@@ -242,21 +218,57 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
     {
         return ktl::err(shared_swapchain_rc.error());
     }
-    kochou::log::debug("swapchain creation success");
+
     return std::make_tuple(shared_swapchain_rc.take_value(),
                            output_info{create_info.min_image_count, chosen_format, chosen_mode});
 }
 
 kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain,
                                      bool _is_need_destroy) noexcept
-    : raw(_swapchain), sctx_(_sctx), is_need_destroy_(_is_need_destroy)
+    : raw(_swapchain), is_need_destroy(_is_need_destroy), sctx_(_sctx)
 {
+}
+
+kochou::entity::swapchain::swapchain(swapchain && _rhs)
+    : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
+      sctx_(std::exchange(_rhs.sctx_, nullptr))
+{
+}
+
+kochou::entity::swapchain &
+kochou::entity::swapchain::operator=(swapchain && _rhs) noexcept
+{
+    if (std::addressof(_rhs) == this)
+    {
+        return *this;
+    }
+
+    clean();
+
+    raw             = std::exchange(_rhs.raw, nullptr);
+    is_need_destroy = std::exchange(_rhs.is_need_destroy, false);
+    sctx_           = std::exchange(_rhs.sctx_, nullptr);
+
+    return *this;
 }
 
 kochou::entity::swapchain::~swapchain() noexcept
 {
-    if (raw && is_need_destroy_)
+    if (raw && is_need_destroy && sctx_)
     {
         ktl::api::destroy_swapchain_khr(kochou::view::device(sctx_), raw, nullptr);
     }
+}
+
+void
+kochou::entity::swapchain::clean() noexcept
+{
+    if (raw && is_need_destroy && sctx_)
+    {
+        auto device = kochou::view::device(sctx_);
+        ktl::api::destroy_swapchain_khr(device, raw, nullptr);
+        raw             = nullptr;
+        is_need_destroy = false;
+    }
+    sctx_ = nullptr;
 }

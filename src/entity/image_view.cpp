@@ -19,22 +19,17 @@ kochou::entity::image_view::allowed(kochou::shared_context _sctx) noexcept
     return true;
 }
 
-ktl::result< std::vector< kochou::entity::image_view >, ktl::errc >
-kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou::entity::image > _images,
+ktl::result< std::vector< kochou::entity::shared_image_view >, ktl::errc >
+kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou::entity::shared_image > _shared_images,
                                  ktl::api::format _format, ktl::api::image_aspect_flag_bits _aspect) noexcept
 {
     auto device = kochou::view::device(_sctx);
-    kochou::log::debug("device={}", device);
 
-    std::vector< image_view > image_views;
-    image_views.reserve(_images.size());
-    kochou::log::debug("images size={}", _images.size());
-    kochou::log::debug("image_views size={}", image_views.size());
-
-    for (ktl::usize i = 0; i < _images.size(); ++i)
+    std::vector< shared_image_view > shared_image_views(_shared_images.size());
+    for (ktl::usize i = 0; i < _shared_images.size(); ++i)
     {
         ktl::api::image_view_create_info create_info{};
-        create_info.image                              = _images[i].raw;
+        create_info.image                              = _shared_images[i]->raw;
         create_info.view_type                          = ktl::api::image_view_type::v_2d;
         create_info.format                             = _format;
         create_info.components.r                       = ktl::api::component_swizzle::v_identity;
@@ -47,38 +42,33 @@ kochou::entity::image_view::make(kochou::shared_context _sctx, std::span< kochou
         create_info.subresource_range.base_array_layer = 0;
         create_info.subresource_range.layer_count      = 1;
 
-        ktl::api::image_view view_raw = nullptr;
-        ktl::api::result     rc       = ktl::api::create_image_view(device, &create_info, nullptr, &view_raw);
+        ktl::api::image_view raw_image_view = nullptr;
+        ktl::api::result     rc = ktl::api::create_image_view(device, &create_info, nullptr, &raw_image_view);
         if (rc != ktl::api::result::v_success)
         {
-            kochou::log::error("create_image_view failed, rc={}", static_cast< ktl::u32 >(rc));
-            for (auto & view : image_views)
-            {
-                if (view.raw)
-                {
-                    ktl::api::destroy_image_view(device, view.raw, nullptr);
-                }
-            }
             return ktl::err(ktl::cast_api_result(rc));
         }
-        kochou::log::debug("image_view created");
-        image_views.emplace_back(_sctx, view_raw, true);
-        kochou::log::debug("image_view moved");
+
+        auto shared_image_view_rc = ktl::memory::make_shared< image_view >(_sctx, raw_image_view, true);
+        if (!shared_image_view_rc.has_value())
+        {
+            return ktl::err(shared_image_view_rc.error());
+        }
+        shared_image_views[i] = shared_image_view_rc.take_value();
     }
 
-    kochou::log::debug("ready to return image_views");
-    return std::move(image_views);
+    return std::move(shared_image_views);
 }
 
-kochou::entity::image_view::image_view(kochou::shared_context _sctx, ktl::api::image_view _image_view,
-                                       bool _is_need_destroy) noexcept
-    : raw(_image_view), is_need_destroy(_is_need_destroy), sctx_(_sctx)
+kochou::entity::image_view::image_view(kochou::shared_context _sctx, kochou::entity::shared_image _shared_image,
+                                       ktl::api::image_view _image_view, bool _is_need_destroy) noexcept
+    : raw(_image_view), is_need_destroy(_is_need_destroy), sctx_(std::move(_sctx)), image_(std::move(_shared_image))
 {
 }
 
 kochou::entity::image_view::image_view(image_view && _rhs) noexcept
     : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
-      sctx_(std::exchange(_rhs.sctx_, nullptr))
+      sctx_(std::exchange(_rhs.sctx_, nullptr)), image_(std::exchange(_rhs.image_, nullptr))
 {
 }
 
@@ -95,6 +85,7 @@ kochou::entity::image_view::operator=(image_view && _rhs) noexcept
     raw             = std::exchange(_rhs.raw, nullptr);
     is_need_destroy = std::exchange(_rhs.is_need_destroy, false);
     sctx_           = std::exchange(_rhs.sctx_, nullptr);
+    image_          = std::exchange(_rhs.image_, nullptr);
 
     return *this;
 }
@@ -107,12 +98,13 @@ kochou::entity::image_view::~image_view() noexcept
 void
 kochou::entity::image_view::clean() noexcept
 {
-    if (raw && is_need_destroy && sctx_)
+    if (raw && is_need_destroy && sctx_ && image_)
     {
         auto device = kochou::view::device(sctx_);
         ktl::api::destroy_image_view(device, raw, nullptr);
         raw             = nullptr;
         is_need_destroy = false;
     }
-    sctx_ = nullptr;
+    sctx_  = nullptr;
+    image_ = nullptr;
 }

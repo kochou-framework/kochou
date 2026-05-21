@@ -10,6 +10,9 @@
 
 namespace kochou::entity
 {
+class command_pool;
+using shared_command_pool = ktl::memory::sptr< command_pool >;
+
 class command_pool
 {
     // requirements
@@ -23,7 +26,7 @@ public:
 
     // fabrics
 public:
-    static ktl::result< command_pool, ktl::errc >
+    static ktl::result< shared_command_pool, ktl::errc >
     make(kochou::shared_context _sctx) noexcept;
 
     // common

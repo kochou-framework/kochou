@@ -16,6 +16,7 @@ using shared_swapchain = ktl::memory::sptr< kochou::entity::swapchain >;
 
 class swapchain
 {
+    // structs
 public:
     struct input_info
     {
@@ -25,11 +26,6 @@ public:
         ktl::api::present_mode_khr present_mode;
         bool                       is_strict;
     };
-    // fallbacks if not is_strict
-    // buffering -> any available
-    // format -> any available
-    // color_space -> any available
-    // present_mode -> any available
     struct output_info
     {
         ktl::u32                   buffering;
@@ -55,21 +51,26 @@ public:
 public:
     swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain, bool _is_need_destroy) noexcept;
     swapchain(const swapchain &) noexcept = delete;
-    swapchain(swapchain &&) noexcept      = default;
+    swapchain(swapchain &&) noexcept;
     swapchain &
     operator=(const swapchain &) noexcept = delete;
     swapchain &
-    operator=(swapchain &&) noexcept = default;
+    operator=(swapchain &&) noexcept;
     ~swapchain() noexcept;
 
     // raw
 public:
     ktl::api::swapchain_khr raw;
+    bool                    is_need_destroy;
+
+private:
+    void
+    clean() noexcept;
 
     // shared raii
 private:
-    kochou::shared_context sctx_;
-    bool                   is_need_destroy_;
+    kochou::shared_context         sctx_;
+    kochou::entity::shared_surface surface_;
 };
 } // namespace kochou::entity
 

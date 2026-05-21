@@ -2,12 +2,16 @@
 #define KOCHOU_ENTITY_FENCE_HPP
 
 #include <ktl/api.hpp>
+#include <ktl/memory.hpp>
 
 #include <kochou/context/context.hpp>
 #include <kochou/entity/interface.hpp>
 
 namespace kochou::entity
 {
+class fence;
+using shared_fence = ktl::memory::sptr< fence >;
+
 class fence
 {
     // requirements
@@ -21,9 +25,10 @@ public:
 
     // fabrics
 public:
-    static ktl::result< fence, ktl::errc >
-    make(kochou::shared_context _sctx, ktl::api::fence_create_flags _bits = static_cast< ktl::api::fence_create_flags >(
-                                           ktl::api::fence_create_flag_bits::v_signaled_bit)) noexcept;
+    static ktl::result< shared_fence, ktl::errc >
+    make(kochou::shared_context       _sctx,
+         ktl::api::fence_create_flags _flags =
+             static_cast< ktl::api::fence_create_flags >(ktl::api::fence_create_flag_bits::v_signaled_bit)) noexcept;
 
     // common
 public:
