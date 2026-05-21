@@ -49,7 +49,8 @@ public:
 
     // common
 public:
-    swapchain(kochou::shared_context _sctx, ktl::api::swapchain_khr _swapchain, bool _is_need_destroy) noexcept;
+    swapchain(kochou::shared_context _sctx, kochou::entity::shared_surface _surface, ktl::api::swapchain_khr _swapchain,
+              bool _is_need_destroy) noexcept;
     swapchain(const swapchain &) noexcept = delete;
     swapchain(swapchain &&) noexcept;
     swapchain &
