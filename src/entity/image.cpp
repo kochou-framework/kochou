@@ -50,7 +50,7 @@ kochou::entity::image::make(kochou::shared_context _sctx, kochou::entity::shared
     std::vector< shared_image > shared_images(amount);
     for (ktl::usize i = 0; i < raw_images.size(); ++i)
     {
-        auto shared_image_rc = ktl::memory::make_shared< image >(_swapchain, raw_images[i], false);
+        auto shared_image_rc = ktl::memory::make_shared< image >(_sctx, _swapchain, raw_images[i], true);
         if (!shared_image_rc.has_value())
         {
             return ktl::err(shared_image_rc.error());
