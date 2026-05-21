@@ -1,6 +1,7 @@
 #ifndef KOCHOU_ENTITY_QUEUE_HPP
 #define KOCHOU_ENTITY_QUEUE_HPP
 
+#include <kochou/entity/fence.hpp>
 #include <kochou/entity/interface.hpp>
 
 namespace kochou::entity
