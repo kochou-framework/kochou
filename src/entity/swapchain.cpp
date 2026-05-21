@@ -229,7 +229,7 @@ kochou::entity::swapchain::swapchain(kochou::shared_context _sctx, ktl::api::swa
 {
 }
 
-kochou::entity::swapchain::swapchain(swapchain && _rhs)
+kochou::entity::swapchain::swapchain(swapchain && _rhs) noexcept
     : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
       sctx_(std::exchange(_rhs.sctx_, nullptr))
 {
