@@ -47,11 +47,12 @@ kochou::entity::surface::make_from(kochou::shared_context _sctx, ktl::api::surfa
 
 kochou::entity::surface::surface(kochou::shared_context _sctx, ktl::api::surface_khr _surface, ktl::u32 _width,
                                  ktl::u32 _height, bool _is_need_destroy) noexcept
-    : width_(_width), height_(_height), raw(_surface), is_need_destroy(_is_need_destroy), sctx_(std::move(_sctx))
+    : width_(_width), height_(_height), raw(_surface), is_need_destroy(_is_need_destroy),
+      sctx_(std::move(_sctx)) noexcept
 {
 }
 
-kochou::entity::surface::surface(surface && _rhs)
+kochou::entity::surface::surface(surface && _rhs) noexcept
     : raw(std::exchange(_rhs.raw, nullptr)), is_need_destroy(std::exchange(_rhs.is_need_destroy, false)),
       sctx_(std::exchange(_rhs.sctx_, nullptr))
 {
