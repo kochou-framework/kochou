@@ -26,7 +26,7 @@ kochou::entity::shader_module::make(kochou::shared_context _sctx, std::span< con
 
     ktl::api::shader_module_create_info info;
     info.flags     = 0;
-    info.code_size = _spv.size();
+    info.code_size = _spv.size() * sizeof(ktl::u32);
     info.p_code    = _spv.data();
 
     ktl::api::shader_module raw_shader_module = nullptr;
