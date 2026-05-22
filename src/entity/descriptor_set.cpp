@@ -38,8 +38,7 @@ kochou::entity::descriptor_set::make(kochou::shared_context                  _sc
         return ktl::err(ktl::cast_api_result(rc));
     }
 
-    auto shared_set_rc =
-        ktl::memory::make_shared< descriptor_set >(std::move(_sctx), raw_set, _layout, _descriptor_pool);
+    auto shared_set_rc = ktl::memory::make_shared< descriptor_set >(std::move(_sctx), _descriptor_pool, raw_set, true);
     if (!shared_set_rc.has_value())
     {
         return ktl::err(shared_set_rc.error());
