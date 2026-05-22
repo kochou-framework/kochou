@@ -54,6 +54,32 @@ kochou::entity::buffer::make(kochou::shared_context _sctx, kochou::entity::share
     return shared_buffer_rc.take_value();
 }
 
+ktl::result< ktl::api::memory_requirements, ktl::errc >
+kochou::entity::buffer::memory_requirements(kochou::shared_context _sctx, ktl::api::dvsize _dvsize,
+                                            ktl::api::buffer_usage_flags _flags,
+                                            ktl::api::sharing_mode       _sharing) noexcept
+{
+    auto device = kochou::view::device(_sctx);
+
+    ktl::api::buffer_create_info info;
+    info.size         = _dvsize;
+    info.usage        = _flags;
+    info.sharing_mode = _sharing;
+
+    ktl::api::buffer raw_buffer = nullptr;
+    ktl::api::result rc         = ktl::api::create_buffer(device, &info, nullptr, &raw_buffer);
+    if (rc != ktl::api::result::v_success)
+    {
+        return ktl::err(ktl::cast_api_result(rc));
+    }
+
+    ktl::api::memory_requirements requirements;
+    ktl::api::get_buffer_memory_requirements(device, raw_buffer, &requirements);
+    ktl::api::destroy_buffer(device, raw_buffer, nullptr);
+
+    return requirements;
+}
+
 kochou::entity::buffer::buffer(kochou::shared_context _sctx, kochou::entity::shared_device_memory _device_memory,
                                ktl::api::buffer _buffer, bool _is_need_destroy) noexcept
     : raw(_buffer), is_need_destroy(_is_need_destroy), sctx_(std::move(_sctx)),

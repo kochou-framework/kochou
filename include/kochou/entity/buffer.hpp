@@ -27,6 +27,9 @@ public:
     static ktl::result< shared_buffer, ktl::errc >
     make(kochou::shared_context _sctx, kochou::entity::shared_device_memory _device_memory, ktl::api::dvsize _dvsize,
          ktl::api::buffer_usage_flags _flags, ktl::api::sharing_mode _sharing) noexcept;
+    static ktl::result< ktl::api::memory_requirements, ktl::errc >
+    memory_requirements(kochou::shared_context _sctx, ktl::api::dvsize _dvsize, ktl::api::buffer_usage_flags _flags,
+                        ktl::api::sharing_mode _sharing) noexcept;
 
     // common
 public:
