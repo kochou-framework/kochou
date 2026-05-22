@@ -6,6 +6,7 @@
 #include <ktl/api.hpp>
 #include <ktl/api/version.hpp>
 #include <ktl/meta.hpp>
+#include <ktl/system.hpp>
 
 #include <kochou/external.hpp>
 #include <kochou/log.hpp>
@@ -39,7 +40,7 @@ public: // TODO make private
         };
         auto view = std::forward< EXTENSION_RANGE >(_extensions) | std::views::transform(raw_cast);
         std::vector< const char * > extensions_vec(std::ranges::begin(view), std::ranges::end(view));
-        if (kochou::os_defined == kochou::os_flag::macos)
+        if (ktl::os_defined == ktl::os_flag::macos)
         {
             extensions_vec.push_back(
                 ktl::meta::extension< ktl::api::extension::khr_portability_enumeration >::raw_name.data());
@@ -61,7 +62,7 @@ public: // TODO make private
 
         // std::vector< const char * >    layers        = {"VK_LAYER_KHRONOS_validation"};
         ktl::api::instance_create_info instance_info = {
-            .flags                      = (kochou::os_defined == kochou::os_flag::macos)
+            .flags                      = (ktl::os_defined == ktl::os_flag::macos)
                                               ? static_cast< ktl::u32 >(ktl::api::instance_create_flag_bits::v_enumerate_portability_bit_khr)
                                               : 0,
             .p_application_info         = &application_info,
