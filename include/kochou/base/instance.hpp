@@ -48,6 +48,17 @@ public: // TODO make private
         {
             kochou::log::debug("instance enable {}", raw_name);
         }
+
+        ktl::u32 lc = 0;
+        ktl::api::enumerate_instance_layer_properties(&lc, nullptr);
+        kochou::log::info("LAYERS COUNT = {}", lc);
+        std::vector< ktl::api::layer_properties > lay(lc);
+        ktl::api::enumerate_instance_layer_properties(&lc, lay.data());
+        for (const auto & l : lay)
+        {
+            kochou::log::debug("name={}", l.layer_name);
+        }
+
         // std::vector< const char * >    layers        = {"VK_LAYER_KHRONOS_validation"};
         ktl::api::instance_create_info instance_info = {
             // .flags                      = (kochou::os_defined == kochou::os_flag::macos)
