@@ -56,7 +56,7 @@ public: // TODO make private
             //                                  : 0,
             .p_application_info         = &application_info,
             .enabled_layer_count        = 1,
-            .pp_enabled_layer_names     = &layers.data(),
+            .pp_enabled_layer_names     = layers.data(),
             .enabled_extension_count    = static_cast< ktl::u32 >(extensions_vec.size()),
             .pp_enabled_extension_names = extensions_vec.data()};
 
