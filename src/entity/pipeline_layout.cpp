@@ -30,8 +30,8 @@ kochou::entity::pipeline_layout::make(kochou::shared_context                    
     {
         raw_layouts[i] = _layouts[i]->raw;
     }
-    ktl::api::pipeline_layout_create_info info = {.set_layout_count          = raw_layouts.size(),
-                                                  .p_set_layouts             = raw_layouts.data(),
+    ktl::api::pipeline_layout_create_info info = {.set_layout_count = static_cast< ktl::u32 >(raw_layouts.size()),
+                                                  .p_set_layouts    = raw_layouts.data(),
                                                   .push_constant_range_count = 0,
                                                   .p_push_constant_ranges    = nullptr};
 
