@@ -20,7 +20,7 @@ kochou::entity::shader_module::allowed(kochou::shared_context _sctx) noexcept
 }
 
 ktl::result< kochou::entity::shared_shader_module, ktl::errc >
-kochou::entity::shader_module::make(kochou::shared_context _sctx, std::span< ktl::u32 > _spv) noexcept
+kochou::entity::shader_module::make(kochou::shared_context _sctx, std::span< const ktl::u32 > _spv) noexcept
 {
     auto device = kochou::view::device(_sctx);
 

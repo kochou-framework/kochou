@@ -27,7 +27,7 @@ public:
     // fabrics
 public:
     static ktl::result< shared_shader_module, ktl::errc >
-    make(kochou::shared_context _sctx, std::span< ktl::u32 > _spv) noexcept;
+    make(kochou::shared_context _sctx, std::span< const ktl::u32 > _spv) noexcept;
 
     // common
 public:
