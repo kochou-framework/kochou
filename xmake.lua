@@ -46,7 +46,13 @@ target("kochou")
         "src/entity/command_pool.cpp",
         "src/entity/command_buffer.cpp",
         "src/entity/semaphore.cpp",
-        "src/entity/queue.cpp"
+        "src/entity/queue.cpp",
+        "src/entity/descriptor_layout.cpp",
+        "src/entity/descriptor_pool.cpp",
+        "src/entity/descriptor_set.cpp",
+        "src/entity/pipeline_layout.cpp",
+        "src/entity/pipeline.cpp",
+        "src/entity/shader_module.cpp"
     )
 
     add_includedirs("include", {public = true})

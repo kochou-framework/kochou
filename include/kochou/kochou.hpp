@@ -18,10 +18,17 @@
 // entity
 #include <kochou/entity/command_buffer.hpp>
 #include <kochou/entity/command_pool.hpp>
+#include <kochou/entity/descriptor_layout.hpp>
+#include <kochou/entity/descriptor_pool.hpp>
+#include <kochou/entity/descriptor_set.hpp>
 #include <kochou/entity/fence.hpp>
 #include <kochou/entity/image.hpp>
 #include <kochou/entity/image_view.hpp>
+#include <kochou/entity/pipeline.hpp>
+#include <kochou/entity/pipeline_layout.hpp>
+#include <kochou/entity/queue.hpp>
 #include <kochou/entity/semaphore.hpp>
+#include <kochou/entity/shader_module.hpp>
 #include <kochou/entity/surface.hpp>
 #include <kochou/entity/swapchain.hpp>
 
