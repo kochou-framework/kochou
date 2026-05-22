@@ -52,7 +52,9 @@ target("kochou")
         "src/entity/descriptor_set.cpp",
         "src/entity/pipeline_layout.cpp",
         "src/entity/pipeline.cpp",
-        "src/entity/shader_module.cpp"
+        "src/entity/shader_module.cpp",
+        "src/entity/device_memory.cpp",
+        "src/entity/buffer.cpp"
     )
 
     add_includedirs("include", {public = true})
