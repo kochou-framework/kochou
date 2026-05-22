@@ -48,15 +48,15 @@ public: // TODO make private
         {
             kochou::log::debug("instance enable {}", raw_name);
         }
-        std::vector< const char * >    layers        = {"VK_LAYER_KHRONOS_validation"};
+        // std::vector< const char * >    layers        = {"VK_LAYER_KHRONOS_validation"};
         ktl::api::instance_create_info instance_info = {
             // .flags                      = (kochou::os_defined == kochou::os_flag::macos)
             //                                  ? static_cast< ktl::u32
             //                                  >(ktl::api::instance_create_flag_bits::v_enumerate_portability_bit_khr)
             //                                  : 0,
             .p_application_info         = &application_info,
-            .enabled_layer_count        = 1,
-            .pp_enabled_layer_names     = layers.data(),
+            .enabled_layer_count        = 0,
+            .pp_enabled_layer_names     = nullptr,
             .enabled_extension_count    = static_cast< ktl::u32 >(extensions_vec.size()),
             .pp_enabled_extension_names = extensions_vec.data()};
 
