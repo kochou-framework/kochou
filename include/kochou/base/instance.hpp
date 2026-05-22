@@ -48,7 +48,7 @@ public: // TODO make private
         {
             kochou::log::debug("instance enable {}", raw_name);
         }
-        std::vector< char * >          layers        = {"VK_LAYER_KHRONOS_validation"};
+        std::vector< const char * >    layers        = {"VK_LAYER_KHRONOS_validation"};
         ktl::api::instance_create_info instance_info = {
             // .flags                      = (kochou::os_defined == kochou::os_flag::macos)
             //                                  ? static_cast< ktl::u32
