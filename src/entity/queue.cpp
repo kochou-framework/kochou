@@ -33,10 +33,10 @@ kochou::entity::queue::make(kochou::shared_context _sctx, queue_type _type) noex
         chosen_queue_type = 0;
         break;
     case compute:
-        chosen_queue_type = 1;
+        chosen_queue_type = 0;
         break;
     case transfer:
-        chosen_queue_type = 2;
+        chosen_queue_type = 0;
         break;
     default:
         return ktl::err(ktl::errc::queue_wrong_value);

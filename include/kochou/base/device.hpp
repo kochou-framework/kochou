@@ -47,9 +47,9 @@ public:
         // 1.0f - graphics
         // 0.7f - compute
         // 0.4f - compute
-        float                              queue_priority[3] = {1.0f, 0.7f, 0.4};
+        float                              queue_priority[1] = {1.0f};
         ktl::api::device_queue_create_info queue             = {
-                        .queue_family_index = _family_index, .queue_count = 3, .p_queue_priorities = queue_priority};
+                        .queue_family_index = _family_index, .queue_count = 1, .p_queue_priorities = queue_priority};
         ktl::api::device_create_info info = {.flags                   = 0,
                                              .queue_create_info_count = 1,
                                              .p_queue_create_infos    = &queue,
