@@ -40,11 +40,6 @@ public: // TODO make private
         };
         auto view = std::forward< EXTENSION_RANGE >(_extensions) | std::views::transform(raw_cast);
         std::vector< const char * > extensions_vec(std::ranges::begin(view), std::ranges::end(view));
-        if (ktl::os_defined == ktl::os_flag::macos)
-        {
-            extensions_vec.push_back(
-                ktl::meta::extension< ktl::api::extension::khr_portability_enumeration >::raw_name.data());
-        }
         for (const auto & raw_name : extensions_vec)
         {
             kochou::log::debug("instance enable {}", raw_name);
