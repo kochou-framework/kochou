@@ -188,7 +188,7 @@ kochou::entity::swapchain::make(kochou::shared_context _sctx, kochou::entity::sh
     }
     kochou::log::debug("extend2d resolved, chosen={}:{}", actual_extent.width, actual_extent.height);
 
-    ktl::api::swapchain_create_info_khr create_info;
+    ktl::api::swapchain_create_info_khr create_info{};
     create_info.surface = surface;
     create_info.min_image_count =
         std::clamp(_input.buffering, capabilities.min_image_count, capabilities.max_image_count);
