@@ -80,6 +80,7 @@ kochou::entity::descriptor_set::operator=(descriptor_set && _rhs) noexcept
 
 kochou::entity::descriptor_set::~descriptor_set() noexcept
 {
+    kochou::log::debug("~descriptor_set");
     clean();
 }
 

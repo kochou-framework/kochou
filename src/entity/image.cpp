@@ -93,6 +93,7 @@ kochou::entity::image::operator=(image && _rhs) noexcept
 
 kochou::entity::image::~image() noexcept
 {
+    kochou::log::debug("~image");
     clean();
 }
 

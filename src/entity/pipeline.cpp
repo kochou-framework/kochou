@@ -27,7 +27,8 @@ kochou::entity::pipeline::make(kochou::shared_context _sctx, kochou::entity::sha
     auto device = kochou::view::device(_sctx);
 
     ktl::api::pipeline raw_pipeline = nullptr;
-    ktl::api::result   rc = ktl::api::create_graphics_pipelines(device, nullptr, 1, &_info, nullptr, &raw_pipeline);
+
+    ktl::api::result rc = ktl::api::create_graphics_pipelines(device, nullptr, 1, &_info, nullptr, &raw_pipeline);
     if (rc != ktl::api::result::v_success)
     {
         return ktl::err(ktl::cast_api_result(rc));
@@ -79,6 +80,7 @@ kochou::entity::pipeline::operator=(pipeline && _rhs) noexcept
 
 kochou::entity::pipeline::~pipeline() noexcept
 {
+    kochou::log::debug("~pipeline");
     clean();
 }
 

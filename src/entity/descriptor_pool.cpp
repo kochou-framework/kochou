@@ -79,6 +79,7 @@ kochou::entity::descriptor_pool::operator=(descriptor_pool && _rhs) noexcept
 
 kochou::entity::descriptor_pool::~descriptor_pool() noexcept
 {
+    kochou::log::debug("~descriptor_pool");
     clean();
 }
 

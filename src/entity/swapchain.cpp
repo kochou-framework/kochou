@@ -255,6 +255,7 @@ kochou::entity::swapchain::operator=(swapchain && _rhs) noexcept
 
 kochou::entity::swapchain::~swapchain() noexcept
 {
+    kochou::log::debug("~swapchain");
     clean();
 }
 

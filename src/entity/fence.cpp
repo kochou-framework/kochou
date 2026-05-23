@@ -72,6 +72,7 @@ kochou::entity::fence::operator=(fence && _rhs) noexcept
 
 kochou::entity::fence::~fence() noexcept
 {
+    kochou::log::debug("~fence");
     clean();
 }
 

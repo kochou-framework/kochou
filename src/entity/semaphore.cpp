@@ -73,6 +73,7 @@ kochou::entity::semaphore::operator=(semaphore && _rhs) noexcept
 
 kochou::entity::semaphore::~semaphore() noexcept
 {
+    kochou::log::debug("~semaphore");
     clean();
 }
 

@@ -96,6 +96,7 @@ kochou::entity::device_memory::operator=(device_memory && _rhs) noexcept
 
 kochou::entity::device_memory::~device_memory() noexcept
 {
+    kochou::log::debug("~device_memory");
     clean();
 }
 

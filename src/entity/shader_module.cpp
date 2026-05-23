@@ -76,6 +76,7 @@ kochou::entity::shader_module::operator=(shader_module && _rhs) noexcept
 
 kochou::entity::shader_module::~shader_module() noexcept
 {
+    kochou::log::debug("~shader_module");
     clean();
 }
 

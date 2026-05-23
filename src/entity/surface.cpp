@@ -76,6 +76,7 @@ kochou::entity::surface::operator=(surface && _rhs) noexcept
 
 kochou::entity::surface::~surface() noexcept
 {
+    kochou::log::debug("~surface");
     clean();
 }
 

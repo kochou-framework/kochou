@@ -78,6 +78,7 @@ kochou::entity::descriptor_layout::operator=(descriptor_layout && _rhs) noexcept
 
 kochou::entity::descriptor_layout::~descriptor_layout() noexcept
 {
+    kochou::log::debug("~descriptor_layout");
     clean();
 }
 

@@ -82,6 +82,7 @@ kochou::entity::command_buffer::operator=(command_buffer && _rhs) noexcept
 
 kochou::entity::command_buffer::~command_buffer() noexcept
 {
+    kochou::log::debug("~command_buffer");
     clean();
 }
 

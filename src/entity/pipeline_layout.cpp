@@ -84,6 +84,7 @@ kochou::entity::pipeline_layout::operator=(pipeline_layout && _rhs) noexcept
 
 kochou::entity::pipeline_layout::~pipeline_layout()
 {
+    kochou::log::debug("~pipeline_layout");
     clean();
 }
 

@@ -77,6 +77,7 @@ kochou::entity::command_pool::operator=(command_pool && _rhs) noexcept
 
 kochou::entity::command_pool::~command_pool() noexcept
 {
+    kochou::log::debug("~command_pool");
     clean();
 }
 

@@ -93,6 +93,7 @@ kochou::entity::image_view::operator=(image_view && _rhs) noexcept
 
 kochou::entity::image_view::~image_view() noexcept
 {
+    kochou::log::debug("~image_view");
     clean();
 }
 

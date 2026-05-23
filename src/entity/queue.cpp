@@ -86,6 +86,7 @@ kochou::entity::queue::operator=(queue && _rhs) noexcept
 
 kochou::entity::queue::~queue() noexcept
 {
+    kochou::log::debug("~queue");
     // nothing to do
 }
 

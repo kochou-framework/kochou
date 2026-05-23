@@ -113,6 +113,7 @@ kochou::entity::buffer::operator=(buffer && _rhs) noexcept
 
 kochou::entity::buffer::~buffer() noexcept
 {
+    kochou::log::debug("~buffer");
     clean();
 }
 
