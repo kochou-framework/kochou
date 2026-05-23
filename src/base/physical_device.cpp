@@ -6,4 +6,7 @@ kochou::physical_device::physical_device(ktl::errc & _errc, ktl::api::physical_d
     _errc = ktl::errc::success;
 };
 
-kochou::physical_device::~physical_device() noexcept {}
+kochou::physical_device::~physical_device() noexcept
+{
+    kochou::log::debug("~physical_device");
+}
