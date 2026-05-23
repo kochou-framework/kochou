@@ -44,6 +44,10 @@ kochou::context::context(ktl::errc & _errc) noexcept
 
 kochou::context::~context() noexcept
 {
+    if (device_->handle_)
+    {
+        ktl::api::device_wait_idle(device_->handle_);
+    }
     auto result = ktl::loader::free(handle_);
     if (!result.has_value())
     {
