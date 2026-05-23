@@ -36,7 +36,7 @@ ktl::result< kochou::entity::shared_surface, ktl::errc >
 kochou::entity::surface::make_from(kochou::shared_context _sctx, ktl::api::surface_khr _surface, ktl::u32 _width,
                                    ktl::u32 _height) noexcept
 {
-    auto shared_surface_rc = ktl::memory::make_shared< surface >(_sctx, _surface, _width, _height, false);
+    auto shared_surface_rc = ktl::memory::make_shared< surface >(_sctx, _surface, _width, _height, true);
     if (!shared_surface_rc.has_value())
     {
         return ktl::err(shared_surface_rc.error());
