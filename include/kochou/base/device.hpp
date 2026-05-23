@@ -75,6 +75,10 @@ public:
     }
     ~device() noexcept;
 
+    // TODO private
+    void
+    clean() noexcept;
+
 public:
     ktl::api::device handle_ = nullptr;
     ktl::u32         family_ = 0;

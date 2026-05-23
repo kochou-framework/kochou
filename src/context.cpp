@@ -45,6 +45,9 @@ kochou::context::context(ktl::errc & _errc) noexcept
 kochou::context::~context() noexcept
 {
     kochou::log::debug("~context");
+    device_->clean();
+    instance_->clean();
+
     auto result = ktl::loader::free(handle_);
     if (!result.has_value())
     {

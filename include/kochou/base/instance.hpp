@@ -84,6 +84,10 @@ public: // TODO make private
     operator=(instance &&) = delete;
     ~instance() noexcept;
 
+    // TODO private
+    void
+    clean() noexcept;
+
 private:
     ktl::api::instance handle_ = nullptr;
 };

@@ -10,6 +10,11 @@
 kochou::instance::~instance() noexcept
 {
     kochou::log::debug("~instance");
+}
+
+void
+kochou::instance::clean() noexcept
+{
     if (handle_)
     {
         ktl::api::destroy_instance(handle_, nullptr);
