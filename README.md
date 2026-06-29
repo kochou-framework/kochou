@@ -1,24 +1,22 @@
-![logo](https://gitverse.ru/kochou-framework/kochou/content/master/pics/kochou2.png)
 # kochou
-## C++ 23 | VulkanAPI
+Framework core provides:
+* graphics subsystem context (kochou::context)
+* requirements system
+* base Vulkan entities with optional lifetime control
 
-### Compilation
-```sh
-xmake build
-```
+## Requirements system
+User can request some hardware feature, in Vulkan there are:
+* ```ktl::api::extension::*```
+* ```ktl::api::feature::*```
+* ```ktl::api::queue_flag_bits::*```
+* (in dev) ```ktl::api::format::*```
+* (in dev) ```ktl::api::layer::*```
+* (in dev) ```ktl::api::version::*```
+* (in dev) memory requirements
 
-```
-1.2 - descriptor_indexing
-1.3 - mesh_shader, pipeline_callback, dynamic_rendering
-```
-
-### Color space priority
-1. VK_COLOR_SPACE_HDR10_ST2084_EXT
-2. VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT
-3. VK_COLOR_SPACE_ADOBERGB_LINEAR_EXT
-4. VK_COLOR_SPACE_ADOBERGB_NONLINEAR_EXT
-5. VK_COLOR_SPACE_SRGB_NONLINEAR_KHR
-6. VK_COLOR_SPACE_BT709_NONLINEAR_EXT
-
-git ls-files --exclude-standard -- ':!**/*.png' | xargs wc -l
-xmake project -k compile_commands
+### ```kochou::ensure```
+If requirement not satisfied, context initialization will return error.
+### ```kochou::should```
+If requirement not satisfied, context initialization will return no error.
+### ```kochou::allowed```
+After context initialization, you can verify is requirement satisfied in facts.
